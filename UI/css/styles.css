@@ -146,6 +146,12 @@ label > span {
   font-weight: bold;
 }
 
+.party-logo {
+  height: 50px;
+  width: 50px;
+  margin-top: 10px;
+}
+
 /*====== Footer Styles =========*/
 footer {
   color: #fff;
@@ -176,10 +182,93 @@ footer {
 .mt-10 {
   margin-top: 10px
 }
+
 .mt-20 {
   margin-top: 20px
 }
 
 .mb-10 {
   margin-bottom: 10px
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+/*===== Table Styles =====*/
+
+table {
+  border-spacing: 1;
+  border-collapse: collapse;
+  background: #fff;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 5px;
+  position: relative;
+}
+
+th, td {
+  padding-left: 8px;
+  text-align: left;
+}
+tr { 
+  border: 1px solid #ccc; 
+  padding-bottom: 10px;
+}
+
+thead tr {
+  height: 50px;
+  background: #FF9902;
+  font-size: 16px;
+}
+
+table button {
+  background: #FF9902;
+  padding: 10px;
+  display: inline-block;
+  border: 0;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+table button.delete {
+  background: #ca2748;
+}
+
+@media only screen and (max-width: 568px) {
+  table {
+    width: 100%;
+  }
+
+  table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+
+  thead tr {
+    display: none;
+  }
+
+  td { 
+		border: none;
+		position: relative;
+		padding-left: 50%; 
+  }
+  td:before { 
+		position: absolute;
+  	top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+		content: attr(data-th);
+		color: #000;
+		font-weight: bold;
+	}
+
 }
