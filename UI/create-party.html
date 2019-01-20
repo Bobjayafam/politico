@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>New Party</title>
+</head>
+
+<body>
+  <div class="main-container">
+    <nav class="navbar container">
+      <div class="navbar-brand">
+        <a href="index.html">
+          <img src="assets/images/logo.png" alt="logo">
+        </a>
+      </div>
+      <label class="navbar_toggle" for="toggle">&#9776;</label>
+      <input type="checkbox" id="toggle">
+      <ul class="navbar-menu">
+        <li><a href="admin.html">Home</a></li>
+        <li><a href="create-party.html" class="active">Create Party</a></li>
+        <li><a href="create-office.html">Create Office</a></li>
+        <li><a href="login.html">Logout</a></li>
+      </ul>
+
+    </nav>
+    <section class="container mb-10">
+      <div class="intro-text text-center">
+        <h1>CREATE NEW PARTY</h1>
+      </div>
+    </section>
+
+    <div class="signup-container container">
+      <form action="">
+        <div class="input-group">
+          <label for="">Party Name <span>*</span></label>
+          <input type="text" required>
+        </div>
+        <div class="input-group">
+          <label for="">Acronym <span>*</span></label>
+          <input type="text" required>
+        </div>
+        <div class="input-group">
+          <label for="">Headquarters Address <span>*</span></label>
+          <input type="text" required>
+        </div>
+        <div class="input-group">
+          <label for="">Logo<span>*</span></label>
+          <input type="file" required>
+        </div>
+        <div class="input-group">
+          <button>Create Party</button>
+        </div>
+      </form>
+    </div>
+
+    <footer class="text-center mt-20">
+      <div class="container">
+        <span>Copyright &copy; 2019 | Politico- An Andela Bootcamp Project</span>
+      </div>
+    </footer>
+  </div>
+
+</body>
+
+</html>
