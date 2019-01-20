@@ -8,12 +8,24 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  position: relative;
+}
+
 body {
   color: #777;
   font-family: 'Open Sans', sans-serif;
   font-weight: 400;
 }
 
+.main-container {
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 100px;
+  display: block;
+}
 /**========= Navigation Styles ===========**/
 
 .navbar {
@@ -140,6 +152,9 @@ footer {
   background: #04091e;
   padding: 15px;
   width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
 
 /*====== Utility Styles =========*/
