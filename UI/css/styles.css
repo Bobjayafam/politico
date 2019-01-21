@@ -110,7 +110,9 @@ body {
 
 /*===== Form Styles =====*/
 
-.input-group > input {
+.input-group > input,
+.input-group > select,
+.input-group > textarea {
   width: 100%;
   border: 1px solid #CCC;
   padding: 10px;
@@ -120,7 +122,13 @@ body {
   margin: 5px 0;
 }
 
-.input-group > input:focus {
+textarea {
+  resize: none;
+}
+
+.input-group > input:focus, 
+.input-group > textarea:focus,
+.input-group > select:focus {
   border-color: #FF9902;
 }
 
