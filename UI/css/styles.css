@@ -93,22 +93,32 @@ body {
   #toggle:checked ~ .navbar-menu{
     display: flex;
     flex-direction: column;
+    z-index: 5;
     top: 80px;
     left: 0;
     background: #F9F9F9;
   }
 }
 
+/*===== Form Styles =====*/
+
 .signup-container {
   max-width: 600px;
   border: 1px solid #CCC;
   border-radius: 3px;
   margin: 50px auto;
-  padding: 10px;
+  padding: 60px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
-/*===== Form Styles =====*/
+@media only screen and (max-width: 734px){
+  .signup-container {
+    padding: 20px;
+  }
+}
+.input-group {
+  padding-bottom: 15px;
+}
 
 .input-group > input,
 .input-group > select,
@@ -142,6 +152,7 @@ textarea {
   transition: 0.3s;
   margin-top: 20px;
   font-size: 16px;
+  color: #fff;
   font-weight: 600;
 }
 
@@ -230,6 +241,7 @@ thead tr {
   height: 50px;
   background: #FF9902;
   font-size: 16px;
+  color: #fff;
 }
 
 table button {
@@ -242,11 +254,16 @@ table button {
   transition: 0.3s;
   margin-top: 20px;
   font-size: 16px;
+  color: #fff;
   font-weight: 400;
 }
 
 table button.delete {
   background: #ca2748;
+}
+
+table button:hover {
+  opacity: 0.8;
 }
 
 @media only screen and (max-width: 568px) {
