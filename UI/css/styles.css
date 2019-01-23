@@ -253,7 +253,6 @@ table button,
   cursor: pointer;
   border-radius: 5px;
   transition: 0.3s;
-  /* margin-top: 20px; */
   font-size: 16px;
   color: #fff;
   font-weight: 400;
@@ -308,7 +307,7 @@ table button:hover {
   top: 40%;
   left: 40%;
   z-index: 200;
-  width: 300px;
+  width: 400px;
   border: 1px solid #ccc;
   background: white;
   color: #fff;
@@ -329,17 +328,18 @@ table button:hover {
   align-items: center;
   justify-content: space-between;
   background: #FF9902;
-  padding: 5px;
 }
 
 .modal-title,
 .modal-body {
   border-bottom: 1px solid #eee;
+  padding: 10px;
 }
 
 .modal-body p{
   font-size: 14px;
   margin: 5px;
+  padding: 10px;
   color: #777;
 }
 
@@ -347,6 +347,7 @@ table button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 20px;
 }
 
 .close {
