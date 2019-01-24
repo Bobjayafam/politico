@@ -434,3 +434,53 @@ table button:hover {
     display: block;
   }
 }
+
+/*==== Card Styles ====*/
+
+.cards {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.card {
+  width: calc(25% - 16px);
+  background: #f9f9f9;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+  padding: 16px 16px 48px;
+}
+
+.card:nth-child(4n) {
+  margin-right: 0;
+}
+
+.card img {
+  max-width: 100%;
+}
+
+@media only screen and (max-width: 960px) {
+  .card {
+    width: calc(50% - 16px);
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .card {
+    width: calc(100% - 16px);
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+.card h1 {
+  margin-bottom: 0;
+}
+
+.card p {
+  margin-left: 16px;
+  margin-right: 16px;
+} 
+
