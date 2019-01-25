@@ -621,3 +621,22 @@ table button:hover {
 .features-heading {
   font-size: 30px;
 }
+
+/*==== Results Page Styles ====*/
+
+.results {
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+span.won {
+  color: #ca2748;
+}
+
+.result-logo {
+  height: 50px;
+  width: 50px;
+  margin-top: 10px;
+  vertical-align: middle;
+  margin-left: 20px;
+}

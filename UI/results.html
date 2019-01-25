@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>Election Results</title>
+</head>
+
+<body>
+  <div class="main-container">
+    <nav class="navbar container">
+      <div class="navbar-brand">
+        <a href="index.html">
+          <img src="assets/images/logo.png" alt="logo">
+        </a>
+      </div>
+      <label class="navbar_toggle" for="toggle">&#9776;</label>
+      <input type="checkbox" id="toggle">
+      <ul class="navbar-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="signup.html">SignUp</a></li>
+        <li><a href="login.html">LogIn</a></li>
+        <li><a href="parties.html">Political Parties</a></li>
+        <li><a href="results.html" class="active">Election Results</a></li>
+      </ul>
+
+    </nav>
+    <section class="container mb-10">
+      <div class="intro-text text-center">
+        <h1>RESULTS</h1>
+      </div>
+      <div class="mt-20">
+        <h2>Results of 2019 General Elections</h2>
+      </div>
+
+    </section>
+    <section class="container">
+      <table>
+        <thead>
+          <tr>
+            <th>Office</th>
+            <th>Candidates</th>
+            <th>Number of votes</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-th="Office">PRESIDENT</td>
+            <td data-th="Candidates">
+              <P>Muhammad Buhari <img src="assets/images/apc.jpg" alt="logo" class="result-logo"></P>
+              <p>Atiku Abubakar <img src="assets/images/pdp.jpg" alt="logo" class="result-logo"></p>
+              <p>Festus Chiamaka <img src="assets/images/apga.png" alt="logo" class="result-logo"></p>
+            </td>
+            <td data-th="Number of votes">
+              <div class="results">14,678,987</div>
+              <div class="results">12,678,987</div>
+              <div class="results">4,678,987</div>
+            </td>
+            <td data-th="Result">
+              <div class="results"><span class="won">WON</span></div>
+              <div class="results">LOST</div>
+              <div class="results">LOST</div>
+            </td>
+          </tr>
+          <tr>
+            <td data-th="Office">GOVERNOR</td>
+            <td data-th="Candidates">
+              <P>Babajide Sanwo Olu <img src="assets/images/apc.jpg" alt="logo" class="result-logo"></P>
+              <p>Jimi Agbaje <img src="assets/images/pdp.jpg" alt="logo" class="result-logo"></p>
+              <p>Femi Pedro <img src="assets/images/apga.png" alt="logo" class="result-logo"></p>
+            </td>
+            <td data-th="Number of votes">
+              <div class="results">14,678,987</div>
+              <div class="results">12,678,987</div>
+              <div class="results">4,678,987</div>
+            </td>
+            <td data-th="Result">
+              <div class="results"><span class="won">WON</span></div>
+              <div class="results">LOST</div>
+              <div class="results">LOST</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="text-center mt-20">
+      <div class="container">
+        <span>Copyright &copy; 2019 | Politico- An Andela Bootcamp Project</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>
