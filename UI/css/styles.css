@@ -157,7 +157,8 @@ textarea {
   font-weight: 600;
 }
 
-.input-group > button:hover {
+.input-group > button:hover,
+.vote:hover {
   opacity: 0.8;
 }
 
@@ -435,6 +436,11 @@ table button:hover {
   font-size: 16px;
   color: #fff;
   font-weight: 600;
+  transition: 0.3s;
+}
+
+.actions button:hover {
+  opacity: 0.8;
 }
 
 @media only screen and (max-width: 768px) {
@@ -529,8 +535,20 @@ table button:hover {
   margin-right: 0;
 }
 
-.voting-label img {
-  max-width: 100%;
+ .logo-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.candidate-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.candidate-logo {
+  display: flex;
 }
 
 @media only screen and (max-width: 960px) {
@@ -612,6 +630,10 @@ table button:hover {
   font-size: 24px;
   color: #fff;
   font-weight: 600;
+}
+
+.hero button:hover {
+  opacity: 0.8;
 }
 
 .features p{
