@@ -233,7 +233,7 @@ footer {
 /*===== Table Styles =====*/
 
 table {
-  border-spacing: 1;
+  border-spacing: 0;
   border-collapse: collapse;
   background: #fff;
   width: 100%;
@@ -246,7 +246,7 @@ table {
 
 th, td {
   padding-left: 8px;
-  text-align: left;
+  text-align: center;
 }
 tr { 
   border: 1px solid #ccc; 
@@ -621,3 +621,39 @@ table button:hover {
 .features-heading {
   font-size: 30px;
 }
+
+/*==== Results Page Styles ====*/
+
+.results {
+  margin-bottom: 50px;
+}
+
+.results:nth-child(3n){
+  margin-bottom: 0;
+}
+
+.won {
+  color: inherit;
+}
+
+.lost {
+  color: #ca2748;
+}
+
+.result-logo {
+  height: 50px;
+  width: 50px;
+  margin-right: 0;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.name-logo {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
