@@ -20,8 +20,8 @@
       <label class="navbar_toggle" for="toggle">&#9776;</label>
       <input type="checkbox" id="toggle">
       <ul class="navbar-menu">
-        <li><a href="admin.html">Dashboard</a></li>
-        <li><a href="create-party.html">Political Parties</a></li>
+        <li><a href="user.html">Dashboard</a></li>
+        <li><a href="parties.html">Political Parties</a></li>
         <li><a href="vote.html" class="active">Vote</a></li>
         <li><a href="results.html">Election Results</a></li>
         <li><a href="login.html">Logout</a></li>
@@ -31,7 +31,8 @@
     <section class="container">
       <div class="intro-text text-center">
         <h1>CAST YOUR VOTE</h1>
-        <p class="mt-20">Welcome to the 2019 General Elections. To vote click on the image of the party and then click
+        <p class="mt-20">Welcome to the 2019 General Elections. To vote click on the image of the candidate and then
+          click
           on vote</p>
       </div>
 
@@ -43,11 +44,13 @@
               <input type="radio" name="president">
               <div>
                 <div>
-                  <img src="assets/images/pdp.jpg" alt="pdp">
+                  <div class="candidate-logo">
+                    <img class="candidate-image" src="assets/images/atiku.jpg" alt="atiku">
+                    <img class="logo-image" src="assets/images/pdp.jpg" alt="pdp">
+                  </div>
                   <div class="card-label">
                     <h1>PDP</h1>
-                    <p>Peoples Democratic Party</p>
-                    <p>Candidate: Atiku Abubakar</p>
+                    <p>ATIKU ABUBAKAR</p>
                   </div>
                 </div>
               </div>
@@ -56,11 +59,13 @@
               <input type="radio" name="president">
               <div>
                 <div>
-                  <img src="assets/images/apc.jpg" alt="apc">
+                  <div class="candidate-logo">
+                    <img class="candidate-image" src="assets/images/buhari.jpg" alt="buhari">
+                    <img class="logo-image" src="assets/images/apc.jpg" alt="apc">
+                  </div>
                   <div class="card-label">
                     <h1>APC</h1>
-                    <p>All Progressives Congress</p>
-                    <p>Candidate: Muhammad Buhari</p>
+                    <p>MUHAMMAD BUHARI</p>
                   </div>
                 </div>
               </div>
@@ -69,24 +74,28 @@
               <input type="radio" name="president">
               <div>
                 <div>
-                  <img src="assets/images/apga.png" alt="apga">
-                  <div class="card-label">
-                    <h1>PDP</h1>
-                    <p>All Progressives Grand Alliance</p>
-                    <p>Candidate: Festus Chiamaka</p>
+                  <div class="candidate-logo">
+                    <img class="candidate-image" src="assets/images/adams.jpg" alt="adams">
+                    <img class="logo-image" src="assets/images/labour.jpg" alt="labour">
                   </div>
-                </div>
-              </div>
-            </label>
-            <label class="voting-label">
-              <input type="radio" name="president">
-              <div>
-                <div>
-                  <img src="assets/images/labour.jpg" alt="labour">
                   <div class="card-label">
                     <h1>LP</h1>
-                    <p>Labour Party</p>
-                    <p>Candidate: Adams Oshiomole</p>
+                    <p>ADAMS OSHIOMOLE</p>
+                  </div>
+                </div>
+              </div>
+            </label>
+            <label class="voting-label">
+              <input type="radio" name="president">
+              <div>
+                <div>
+                  <div class="candidate-logo">
+                    <img class="candidate-image" src="assets/images/rochas.jpg" alt="rochas">
+                    <img class="logo-image" src="assets/images/apga.png" alt="apga">
+                  </div>
+                  <div class="card-label">
+                    <h1>APGA</h1>
+                    <p>ROCHAS OKOROCHA</p>
                   </div>
                 </div>
               </div>
@@ -102,53 +111,61 @@
         <form action="">
           <div class="voting-cards">
             <label class="voting-label">
-              <input type="radio" name="governor">
+              <input type="radio" name="president">
               <div>
                 <div>
-                  <img src="assets/images/pdp.jpg" alt="pdp">
+                  <div class="candidate-logo">
+                    <img class="candidate-image" src="assets/images/atiku.jpg" alt="atiku">
+                    <img class="logo-image" src="assets/images/pdp.jpg" alt="pdp">
+                  </div>
                   <div class="card-label">
                     <h1>PDP</h1>
-                    <p>Peoples Democratic Party</p>
-                    <p>Candidate: Jimi Agbaje</p>
+                    <p>ATIKU ABUBAKAR</p>
                   </div>
                 </div>
               </div>
             </label>
             <label class="voting-label">
-              <input type="radio" name="governor">
+              <input type="radio" name="president">
               <div>
                 <div>
-                  <img src="assets/images/apc.jpg" alt="apc">
+                  <div class="candidate-logo">
+                    <img class="candidate-image" src="assets/images/buhari.jpg" alt="buhari">
+                    <img class="logo-image" src="assets/images/apc.jpg" alt="apc">
+                  </div>
                   <div class="card-label">
                     <h1>APC</h1>
-                    <p>All Progressives Congress</p>
-                    <p>Candidate: Babajide Sanwo Olu</p>
+                    <p>MUHAMMAD BUHARI</p>
                   </div>
                 </div>
               </div>
             </label>
             <label class="voting-label">
-              <input type="radio" name="governor">
+              <input type="radio" name="president">
               <div>
                 <div>
-                  <img src="assets/images/apga.png" alt="apga">
-                  <div class="card-label">
-                    <h1>PDP</h1>
-                    <p>All Progressives Grand Alliance</p>
-                    <p>Candidate: Nnamdi Okechukwu</p>
+                  <div class="candidate-logo">
+                    <img class="candidate-image" src="assets/images/adams.jpg" alt="adams">
+                    <img class="logo-image" src="assets/images/labour.jpg" alt="labour">
                   </div>
-                </div>
-              </div>
-            </label>
-            <label class="voting-label">
-              <input type="radio" name="governor">
-              <div>
-                <div>
-                  <img src="assets/images/labour.jpg" alt="labour">
                   <div class="card-label">
                     <h1>LP</h1>
-                    <p>Labour Party</p>
-                    <p>Candidate: Femi Pedro</p>
+                    <p>ADAMS OSHIOMOLE</p>
+                  </div>
+                </div>
+              </div>
+            </label>
+            <label class="voting-label">
+              <input type="radio" name="president">
+              <div>
+                <div>
+                  <div class="candidate-logo">
+                    <img class="candidate-image" src="assets/images/rochas.jpg" alt="rochas">
+                    <img class="logo-image" src="assets/images/apga.png" alt="apga">
+                  </div>
+                  <div class="card-label">
+                    <h1>APGA</h1>
+                    <p>ROCHAS OKOROCHA</p>
                   </div>
                 </div>
               </div>
