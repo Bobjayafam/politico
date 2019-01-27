@@ -1,0 +1,46 @@
+{
+  "name": "politico",
+  "version": "1.0.0",
+  "description": "A web application that enables citizens give their mandate to politicians running for different government offices while building trust in the process through transparency.",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf dist && mkdir dist",
+    "build-babel": "babel -d ./dist ./server -s",
+    "build": "npm run clean && npm run build-babel",
+    "start": "npm run build && node ./dist/server.js",
+    "dev": "babel-watch server/server.js",
+    "test": "mocha server/test/*.js --require babel-register --reporter spec || exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bobjayafam/politico.git"
+  },
+  "keywords": [
+    "politico",
+    "andela",
+    "bootcamp",
+    "challenge"
+  ],
+  "author": "Jude Afam <afamjudeo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bobjayafam/politico/issues"
+  },
+  "homepage": "https://github.com/Bobjayafam/politico#readme",
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "1.7.0",
+    "babel-watch": "2.0.8",
+    "chai": "4.2.0",
+    "chai-http": "4.2.1",
+    "eslint": "5.12.1",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.15.0",
+    "mocha": "5.2.0"
+  },
+  "dependencies": {
+    "dotenv": "6.2.0",
+    "express": "4.16.4",
+    "morgan": "1.9.1"
+  }
+}
