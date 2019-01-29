@@ -21,5 +21,17 @@ describe('API home route', () => {
           done();
         });
     });
+
+    it('should return not Found when an endpoint that does not exist is requested', (done) => {
+      chai
+        .request(server)
+        .get('/api/v1/ncnccnm')
+        .end((error, res) => {
+          res.status.should.eql(404);
+          res.type.should.eql('application/json');
+          res.body.status.should.equal(404);
+          done();
+        });
+    });
   });
 });

@@ -1,4 +1,7 @@
 import express from 'express';
+import PartyController from '../controllers/PartyController';
+import Validate from '../middleware/Validate';
+import { uploadLogo } from '../middleware/imageUpload';
 
 const router = express.Router();
 
@@ -12,5 +15,7 @@ router.get('/', (req, res) => {
     ],
   });
 });
+
+router.post('/parties', uploadLogo, Validate.validateParty, PartyController.createParty);
 
 export default router;
