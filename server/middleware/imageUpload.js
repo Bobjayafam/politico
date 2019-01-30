@@ -1,10 +1,11 @@
 import multer from 'multer';
 import dotenv from 'dotenv';
 import mkdirp from 'mkdirp';
+import cloudinary from 'cloudinary';
 
 dotenv.config();
 
-const cloudinary = require('cloudinary').v2;
+
 const fs = require('fs');
 
 const storage = multer.diskStorage({
@@ -51,7 +52,7 @@ const uploadLogo = (req, res, next) => {
     }
     if (req.file) {
       const { path } = req.file;
-      cloudinary.uploader.upload(path, (err, image) => {
+      cloudinary.v2.uploader.upload(path, (err, image) => {
         if (err) {
           return res.send(err);
         }

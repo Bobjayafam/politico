@@ -4,7 +4,7 @@ import { logoUrlUploaded } from '../middleware/imageUpload';
 class PartyController {
   static createParty(req, res, next) {
     const {
-      name, hqAddress, logoUrl, acronym,
+      name, hqAddress, acronym,
     } = req.body;
     const newParty = {
       id: parties.length + 1,
