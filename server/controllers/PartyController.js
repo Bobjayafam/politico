@@ -42,6 +42,13 @@ class PartyController {
     error.status = 404;
     return next(error);
   }
+
+  static getAllParties(req, res) {
+    res.status(200).json({
+      status: 200,
+      data: [...parties],
+    });
+  }
 }
 
 export default PartyController;
