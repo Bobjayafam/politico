@@ -22,6 +22,16 @@ class Validate {
     }
     return next();
   }
+
+  static validateId(req, res, next) {
+    const { id } = req.params;
+    if (isNaN(id)) {
+      const error = new Error('Invalid id');
+      error.status = 400;
+      return next(error);
+    }
+    return next();
+  }
 }
 
 

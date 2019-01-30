@@ -1,7 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../server';
-import parties from '../models/parties';
 
 chai.use(chaiHttp);
 
@@ -87,6 +86,36 @@ describe('POST /api/v1/parties', () => {
       .attach('logoUrl', './UI/assets/images/accord.jpg', 'accord.jpg')
       .then((res) => {
         res.status.should.eql(400);
+        done();
+      });
+  });
+});
+
+describe('GET /api/v1/parties', () => {
+  it('should return a single party', (done) => {
+    chai.request(server).get('/api/v1/parties/1')
+      .end((err, res) => {
+        should.not.exist(err);
+        res.body.data[0].name.should.eql('Peoples Democratic Party');
+        res.status.should.eql(200);
+        done();
+      });
+  });
+
+  it('should not return a party if the id is not valid', (done) => {
+    chai.request(server).get('/api/v1/parties/mnbvn')
+      .end((err, res) => {
+        res.status.should.eql(400);
+        res.body.error.should.eql('Invalid id');
+        done();
+      });
+  });
+
+  it('should return an error if there is no party with the id', (done) => {
+    chai.request(server).get('/api/v1/parties/9')
+      .end((err, res) => {
+        res.status.should.eql(404);
+        res.body.error.should.eql('No party with such id');
         done();
       });
   });
