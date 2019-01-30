@@ -1,5 +1,6 @@
 import multer from 'multer';
 import dotenv from 'dotenv';
+import mkdirp from 'mkdirp';
 
 dotenv.config();
 
@@ -8,7 +9,8 @@ const fs = require('fs');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    const dir = 'uploads/';
+    mkdirp(dir, err => cb(err, dir));
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
