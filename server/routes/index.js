@@ -17,5 +17,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/parties', uploadLogo, Validate.validateParty, PartyController.createParty);
+router.get('/parties/:id', Validate.validateId, PartyController.getOneParty);
 
 export default router;

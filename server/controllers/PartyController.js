@@ -27,6 +27,21 @@ class PartyController {
       ],
     });
   }
+
+  static getOneParty(req, res, next) {
+    const id = parseInt(req.params.id, 10);
+
+    const partyFound = parties.filter(party => party.id === id)[0];
+    if (partyFound) {
+      return res.status(200).json({
+        status: 200,
+        data: [partyFound],
+      });
+    }
+    const error = new Error('No party with such id');
+    error.status = 404;
+    return next(error);
+  }
 }
 
 export default PartyController;
