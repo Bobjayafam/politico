@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post('/', Validate.validateOffice, OfficeController.createoffice);
 router.get('/', OfficeController.getAllOffices);
+router.get('/:id', Validate.validateId, OfficeController.getOneOffice);
 
 export default router;
-
