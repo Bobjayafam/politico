@@ -14,7 +14,7 @@ const parties = [
     acronym: 'AD',
   },
   {
-    id: 1,
+    id: 3,
     name: 'All Progressives Congress',
     hqAddress: '12 Banire Street, Egbeda, Lagos',
     logoUrl: 'https://buzznigeria.com/wp-content/uploads/2016/10/PDP-logo.jpg',

@@ -7,7 +7,7 @@ class ErrorMiddleware {
 
   /* eslint-disable no-unused-vars */
   static errorHandler(err, req, res, next) {
-    const statusCode = err.status !== 200 ? err.status : 500;
+    const statusCode = err.status || 500;
     res.status(statusCode);
 
     res.json({

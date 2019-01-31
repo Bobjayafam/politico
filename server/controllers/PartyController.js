@@ -49,6 +49,30 @@ class PartyController {
       data: [...parties],
     });
   }
+
+  static updatePartyName(req, res, next) {
+    const id = parseInt(req.params.id, 10);
+    const { name } = req.body;
+    let partyIndex;
+
+    parties.filter((party, index) => {
+      if (party.id === id) {
+        partyIndex = index;
+      }
+    });
+
+    if (partyIndex === undefined) {
+      const error = new Error('No party with such id');
+      error.status = 404;
+      return next(error);
+    }
+
+    parties[partyIndex].name = name;
+    return res.status(200).json({
+      status: 200,
+      data: [{ message: 'successfully updated' }],
+    });
+  }
 }
 
 export default PartyController;

@@ -130,3 +130,33 @@ describe('GET /api/v1/parties', () => {
       });
   });
 });
+
+describe('PATCH /api/v1/parties/:id/name', () => {
+  it('should update a party name', (done) => {
+    chai.request(server).patch('/api/v1/parties/1/name').send({
+      name: 'Republican',
+    }).end((err, res) => {
+      should.not.exist(err);
+      res.status.should.equal(200);
+      done();
+    });
+  });
+
+  it('should not update a party name if the id is not a number', (done) => {
+    chai.request(server).patch('/api/v1/parties/mmmm/name').send({
+      name: 'Republican',
+    }).end((err, res) => {
+      res.status.should.equal(400);
+      done();
+    });
+  });
+
+  it('should not update a party name if the id is not found', (done) => {
+    chai.request(server).patch('/api/v1/parties/20/name').send({
+      name: 'Republican',
+    }).end((err, res) => {
+      res.status.should.equal(404);
+      done();
+    });
+  });
+});

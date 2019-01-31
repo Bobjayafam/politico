@@ -1,10 +1,10 @@
 import express from 'express';
 import homeRoute from './homeRoute';
-import partiesroute from './partiesRoute';
+import partiesRoute from './partiesRoute';
 
 const router = express.Router();
 
 router.use('/', homeRoute);
-router.use('/parties', partiesroute);
+router.use('/parties', partiesRoute);
 
 export default router;
