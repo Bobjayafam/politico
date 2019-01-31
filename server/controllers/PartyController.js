@@ -73,6 +73,27 @@ class PartyController {
       data: [{ message: 'successfully updated' }],
     });
   }
+
+  static deleteParty(req, res, next) {
+    const id = parseInt(req.params.id, 10);
+    let partyIndex;
+
+    const partyFound = parties.filter((party, index) => {
+      if (party.id === id) {
+        partyIndex = index;
+      }
+    });
+    if (partyIndex === undefined) {
+      const error = new Error('No party with such id');
+      error.status = 404;
+      return next(error);
+    }
+    parties.splice(partyIndex, 1);
+    return res.status(200).json({
+      status: 200,
+      data: [{ message: 'successfully deleted' }],
+    });
+  }
 }
 
 export default PartyController;
