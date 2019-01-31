@@ -8,3 +8,4 @@ router.post('/', Validate.validateOffice, OfficeController.createoffice);
 router.get('/', OfficeController.getAllOffices);
 
 export default router;
+

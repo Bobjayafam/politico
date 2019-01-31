@@ -6,6 +6,16 @@ chai.use(chaiHttp);
 
 const should = chai.should();
 
+describe('GET /api/v1/offices', () => {
+  it('should return all offices', (done) => {
+    chai.request(server).get('/api/v1/offices')
+      .end((err, res) => {
+        res.status.should.eql(200);
+        done();
+      });
+  });
+});
+
 describe('POST /api/v1/offices', () => {
   it('should create a new office', (done) => {
     chai.request(server).post('/api/v1/offices').send({
@@ -52,12 +62,5 @@ describe('POST /api/v1/offices', () => {
   });
 });
 
-describe('GET /api/v1/offices', () => {
-  it('should return all offices', (done) => {
-    chai.request(server).get('/api/v1/offices')
-      .end((err, res) => {
-        res.status.should.eql(200);
-        done();
-      });
-  });
-});
+
+
