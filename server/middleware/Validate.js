@@ -32,6 +32,27 @@ class Validate {
     }
     return next();
   }
+
+  static validateOffice(req, res, next) {
+    const { type, name } = req.body;
+
+    if (typeof name === 'string' && name.trim().length === 0) {
+      const error = new Error('Enter a valid office name');
+      error.status = 400;
+      return next(error);
+    }
+    if (typeof type === 'string' && type.trim().length === 0) {
+      const error = new Error('Enter a valid office name');
+      error.status = 400;
+      return next(error);
+    }
+    if (type !== 'federal' && type.trim().toLowerCase() !== 'state' && type.trim().toLowerCase() !== 'legislative' && type.trim().toLowerCase() !== 'local government') {
+      const error = new Error('Office type can only be either federal, state, legislative or local government');
+      error.status = 400;
+      return next(error);
+    }
+    return next();
+  }
 }
 
 
