@@ -16,7 +16,7 @@ Politico- A web application that enables citizens give their mandate to politici
 The templates for the frontend of this project can be viewed [here](https://bobjayafam.github.io/politico/UI)
 
 # Technologies
-This project makes use of `HTML` and `CSS` for the UI templates, [NodeJs](https://www.nodejs.org) and [Express](https://www.expressjs.com) framework for the backend, a [cloudinary](https://www.cloudinary.com) account for uploading images to the cloud and data structures to store data in memory
+This project makes use of `HTML` and `CSS` for the UI templates, [NodeJs](https://www.nodejs.org) and [Express](https://www.expressjs.com) framework for the backend, a [cloudinary](https://www.cloudinary.com) account for uploading images to the cloud and [Postgresql](https://www.postgresql.org/) for the database.
 
 # How to run locally
 With Node installed, take the following steps to have the project on your local machine
@@ -24,6 +24,7 @@ With Node installed, take the following steps to have the project on your local 
 2. Navigate to the project directory `cd politico`
 3. Run npm install to install project dependencies
 4. Change `.env.example` to `.env` and provide the necessary credentials. The cloudinary credentials (cloud_name, api_key and api_secret) can obtained by opening a free cloudinary account.
+5. With postgresql installed, create a database and add the connection string to .env file as DATABASE_URL.
 5. Run `npm start` to start the application
 
 # Testing
