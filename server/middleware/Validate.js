@@ -88,6 +88,22 @@ class Validate {
 
     return next();
   }
+
+  static validateUserLogin(req, res, next) {
+    const { email, password } = req.body;
+    if (!Helpers.isValidEmail(email)) {
+      const error = new Error('Invalid email');
+      error.status = 401;
+      return next(error);
+    }
+
+    if (!Helpers.isValidPassword(password)) {
+      const error = new Error('Invalid password');
+      error.status = 401;
+      return next(error);
+    }
+    return next();
+  }
 }
 
 
