@@ -1,6 +1,5 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { request } from 'http';
 import server from '../server';
 
 chai.use(chaiHttp);
@@ -75,6 +74,50 @@ describe('POST /api/v1/auth/signup', () => {
           phoneNumber: '08025862169',
         });
       res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+});
+
+describe('POST /auth/login', () => {
+  it('should return a token when supplied with valid credentials', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'stapolly@yahoo.com',
+          password: '123456',
+        });
+      res.status.should.eql(200);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error when email is not correct', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'stapolly12@yahoo.com',
+          password: '123456',
+        });
+      res.status.should.eql(401);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error when password is not correct', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'stapolly@yahoo.com',
+          password: '123456789',
+        });
+      res.status.should.eql(401);
     } catch (error) {
       console.log(error);
     }

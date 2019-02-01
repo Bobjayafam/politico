@@ -44,6 +44,47 @@ class UserController {
       await client.release();
     }
   }
+
+  static async userLogin(req, res) {
+    const client = await pool.connect();
+    try {
+      const { email, password } = req.body;
+      const query = 'SELECT id, email, password, first_name, last_name FROM users WHERE email = $1';
+      const values = [email];
+      const result = await client.query(query, values);
+      if (result.rowCount <= 0) {
+        res.status(401).json({
+          status: 401,
+          error: 'You are unauthorized',
+        });
+        return;
+      }
+      const userFound = result.rows[0];
+      if (!Helpers.comparePassword(password, userFound.password)) {
+        res.status(401).json({
+          status: 401,
+          error: 'You are unauthorized',
+        });
+        return;
+      }
+      const token = Helpers.generateToken(userFound.id);
+      // eslint-disable-next-line consistent-return
+      return res.status(200).json({
+        status: 200,
+        data: [{
+          token,
+          user: {
+            firstname: userFound.first_name,
+            email: userFound.email,
+          },
+        }],
+      });
+    } catch (error) {
+      res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
+    }
+  }
 }
 
 
