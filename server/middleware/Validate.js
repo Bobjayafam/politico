@@ -53,6 +53,41 @@ class Validate {
     }
     return next();
   }
+
+  static validateUser(req, res, next) {
+    const {
+      firstname, lastname, othername, email, password, phoneNumber, passportUrl,
+    } = req.body;
+
+    if (Helpers.isEmpty(firstname) || Helpers.isEmpty(lastname)) {
+      const error = new Error('First Name or Last Name cannot be empty');
+      error.status = 400;
+      return next(error);
+    }
+    if (!Helpers.isValidImageUrl(passportUrl)) {
+      const error = new Error('Enter a valid image URL');
+      error.status = 400;
+      return next(error);
+    }
+    if (!Helpers.isValidEmail(email)) {
+      const error = new Error('Enter a valid email');
+      error.status = 400;
+      return next(error);
+    }
+    if (!Helpers.isValidPhone(phoneNumber)) {
+      const error = new Error('Enter a valid phone number');
+      error.status = 400;
+      return next(error);
+    }
+
+    if (!Helpers.isValidPassword(password)) {
+      const error = new Error('password must 6 characters or more');
+      error.status = 400;
+      return next(error);
+    }
+
+    return next();
+  }
 }
 
 
