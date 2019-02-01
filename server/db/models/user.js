@@ -8,7 +8,7 @@ export default {
       email VARCHAR UNIQUE NOT NULL,
       password VARCHAR NOT NULL,
       phone_number VARCHAR,
-      is_admin BOOLEAN DEFAULT FALSE,
+      is_admin BOOLEAN NOT NULL DEFAULT FALSE,
       passport_url VARCHAR NOT NULL
     )
   `,
