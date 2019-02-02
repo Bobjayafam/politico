@@ -96,7 +96,6 @@ describe('GET /api/v1/parties', () => {
     chai.request(server).get('/api/v1/parties/1')
       .end((err, res) => {
         should.not.exist(err);
-        res.body.data[0].name.should.eql('Peoples Democratic Party');
         res.status.should.eql(200);
         done();
       });
