@@ -74,11 +74,29 @@ class PartyController {
     }
   }
 
-  static getAllParties(req, res) {
-    res.status(200).json({
-      status: 200,
-      data: [...parties],
-    });
+  static async getAllParties(req, res) {
+    const client = await pool.connect();
+    const query = 'SELECT * FROM parties';
+
+    try {
+      const result = await client.query(query);
+      const { rowCount, rows } = result;
+      if (rowCount <= 0) {
+        res.status(200).json({
+          status: 200,
+          data: [],
+        });
+        return;
+      }
+      res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (error) {
+      return res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
+    }
   }
 
   static updatePartyName(req, res, next) {
