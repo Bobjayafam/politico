@@ -44,19 +44,34 @@ class PartyController {
     }
   }
 
-  static getOneParty(req, res, next) {
+  static async getOneParty(req, res, next) {
+    const client = await pool.connect();
     const id = parseInt(req.params.id, 10);
+    const query = 'SELECT * FROM parties WHERE id = $1';
+    const values = [id];
 
-    const partyFound = parties.filter(party => party.id === id)[0];
-    if (partyFound) {
-      return res.status(200).json({
+    try {
+      const result = await client.query(query, values);
+      const { rowCount, rows } = result;
+      if (rowCount <= 0) {
+        const error = new Error('No party with such id');
+        error.status = 404;
+        return next(error);
+      }
+      res.status(200).json({
         status: 200,
-        data: [partyFound],
+        data: [{
+          id: rows[0].id,
+          name: rows[0].name,
+          logoUrl: rows[0].logo_url,
+          acronym: rows[0].acronym,
+        }],
       });
+    } catch (error) {
+      return res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
     }
-    const error = new Error('No party with such id');
-    error.status = 404;
-    return next(error);
   }
 
   static getAllParties(req, res) {
