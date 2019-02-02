@@ -59,7 +59,10 @@ describe('POST /api/v1/offices', () => {
   });
 
   it('should return an error when office name and type already exist', (done) => {
-    chai.request(server).post('/api/v1/offices').send({ type: 'federal', name: 'president' })
+    chai.request(server).post('/api/v1/offices').send({
+      name: 'house of assembly',
+      type: 'state',
+    })
       .end((err, res) => {
         res.status.should.eql(409);
         done();

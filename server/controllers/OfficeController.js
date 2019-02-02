@@ -1,28 +1,38 @@
 import offices from '../models/offices';
+import pool from '../db/connection';
 
 class OfficeController {
-  static createoffice(req, res, next) {
-    const {
-      type, name,
-    } = req.body;
-    const newOffice = {
-      id: offices.length + 1,
-      type,
-      name,
-    };
-    const officeFound = offices.filter(office => office.name === name && office.type === type)[0];
-    if (officeFound) {
-      const error = new Error(`Office with name ${name} and type ${type} already exists`);
-      error.status = 409;
-      return next(error);
+  static async createoffice(req, res, next) {
+    const client = await pool.connect();
+    try {
+      const { name, type } = req.body;
+
+      const query = 'INSERT INTO offices(name, type) VALUES($1, $2) RETURNING *';
+      const values = [name, type];
+
+      const result = await client.query(query, values);
+      const { rows } = result;
+      if (result.rowCount) {
+        res.status(201).json({
+          status: 200,
+          data: [{
+            id: rows[0].id,
+            name: rows[0].name,
+            type: rows[0].type,
+          }],
+        });
+        return;
+      }
+    } catch (error) {
+      const { constraint } = error;
+      if (constraint === 'offices_name_key') {
+        res.status(409).json({ status: 409, error: 'This office has been created already' });
+        return;
+      }
+      return res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
     }
-    offices.push(newOffice);
-    return res.status(201).json({
-      status: 201,
-      data: [
-        newOffice,
-      ],
-    });
   }
 
   static getAllOffices(req, res, next) {
