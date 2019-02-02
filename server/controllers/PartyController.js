@@ -99,28 +99,32 @@ class PartyController {
     }
   }
 
-  static updatePartyName(req, res, next) {
-    const id = parseInt(req.params.id, 10);
-    const { name } = req.body;
-    let partyIndex;
+  static async updatePartyName(req, res, next) {
+    const client = await pool.connect();
+    try {
+      const id = parseInt(req.params.id, 10);
+      const { name } = req.body;
 
-    parties.filter((party, index) => {
-      if (party.id === id) {
-        partyIndex = index;
+      const query = 'UPDATE parties SET name = $1 WHERE id = $2 RETURNING *';
+      const values = [name, id];
+
+      const result = await client.query(query, values);
+      const { rowCount, rows } = result;
+      if (rowCount <= 0) {
+        const error = new Error('No party with such id');
+        error.status = 404;
+        return next(error);
       }
-    });
+      res.status(200).json({
+        status: 200,
+        data: rows,
+      });
 
-    if (partyIndex === undefined) {
-      const error = new Error('No party with such id');
-      error.status = 404;
-      return next(error);
+    } catch (error) {
+      return res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
     }
-
-    parties[partyIndex].name = name;
-    return res.status(200).json({
-      status: 200,
-      data: [{ message: 'successfully updated' }],
-    });
   }
 
   static deleteParty(req, res, next) {
