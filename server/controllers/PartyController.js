@@ -127,25 +127,33 @@ class PartyController {
     }
   }
 
-  static deleteParty(req, res, next) {
-    const id = parseInt(req.params.id, 10);
-    let partyIndex;
+  static async deleteParty(req, res, next) {
+    const client = await pool.connect();
+    try {
+      const id = parseInt(req.params.id, 10);
+      const query = 'DELETE FROM parties WHERE id = $1 RETURNING *';
+      const values = [id];
 
-    const partyFound = parties.filter((party, index) => {
-      if (party.id === id) {
-        partyIndex = index;
+      const result = await client.query(query, values);
+
+      const { rowCount, rows } = result;
+      if (rowCount <= 0) {
+        const error = new Error('No party with such id');
+        error.status = 404;
+        return next(error);
       }
-    });
-    if (partyIndex === undefined) {
-      const error = new Error('No party with such id');
-      error.status = 404;
-      return next(error);
+      res.status(200).json({
+        status: 200,
+        data: [{
+          message: `You successfully deleted ${rows[0].name} party`,
+        }],
+      });
+
+    } catch (error) {
+      return res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
     }
-    parties.splice(partyIndex, 1);
-    return res.status(200).json({
-      status: 200,
-      data: [{ message: 'successfully deleted' }],
-    });
   }
 }
 
