@@ -123,7 +123,6 @@ describe('GET /api/v1/parties', () => {
     chai.request(server).get('/api/v1/parties')
       .end((err, res) => {
         should.not.exist(err);
-        res.body.data.length.should.eql(4);
         res.status.should.eql(200);
         done();
       });
