@@ -42,21 +42,34 @@ class OfficeController {
     });
   }
 
-  static getOneOffice(req, res, next) {
+  static async getOneOffice(req, res, next) {
+    const client = await pool.connect();
     const id = parseInt(req.params.id, 10);
+    const query = 'SELECT * FROM offices WHERE id = $1';
+    const values = [id];
 
-    const officeFound = offices.filter(office => office.id === id)[0];
-    if (officeFound) {
-      return res.status(200).json({
+    try {
+      const result = await client.query(query, values);
+      const { rowCount, rows } = result;
+      if (rowCount <= 0) {
+        const error = new Error('No office with such id');
+        error.status = 404;
+        return next(error);
+      }
+      res.status(200).json({
         status: 200,
-        data: [officeFound],
+        data: [{
+          id: rows[0].id,
+          name: rows[0].name,
+          type: rows[0].type,
+        }],
       });
+    } catch (error) {
+      return res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
     }
-    const error = new Error('No office with such id');
-    error.status = 404;
-    return next(error);
   }
 }
 
 export default OfficeController;
-
