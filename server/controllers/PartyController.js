@@ -23,6 +23,7 @@ class PartyController {
             name: rows[0].name,
             hqAddress: rows[0].hq_address,
             acronym: rows[0].acronym,
+            logoUrl: rows[0].logo_url,
           }],
         });
         return;
