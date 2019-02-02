@@ -1,31 +1,47 @@
 import parties from '../models/parties';
 import { logoUrlUploaded } from '../middleware/imageUpload';
+import pool from '../db/connection';
 
 class PartyController {
-  static createParty(req, res, next) {
-    const {
-      name, hqAddress, acronym,
-    } = req.body;
-    const newParty = {
-      id: parties.length + 1,
-      name,
-      hqAddress,
-      logoUrl: logoUrlUploaded,
-      acronym,
-    };
-    const partyFound = parties.filter(party => party.name === name)[0];
-    if (partyFound) {
-      const error = new Error(`Party with name ${name} already exists`);
-      error.status = 409;
-      return next(error);
+  static async createParty(req, res) {
+    const client = await pool.connect();
+    try {
+      const {
+        name, hqAddress, acronym,
+      } = req.body;
+
+      const query = 'INSERT INTO parties(name, hq_address, acronym, logo_url) VALUES($1, $2, $3, $4) RETURNING *';
+      const values = [name, hqAddress, acronym, logoUrlUploaded];
+
+      const result = await client.query(query, values);
+      const { rows } = result;
+      if (result.rowCount) {
+        res.status(201).json({
+          status: 200,
+          data: [{
+            id: rows[0].id,
+            name: rows[0].name,
+            hqAddress: rows[0].hq_address,
+            acronym: rows[0].acronym,
+            logoUrl: rows[0].logo_url,
+          }],
+        });
+        return;
+      }
+    } catch (error) {
+      const { constraint } = error;
+      if (constraint === 'parties_name_key') {
+        res.status(409).json({ status: 409, error: 'A party has been registered with this same name' });
+        return;
+      }
+      if (constraint === 'parties_acronym_key') {
+        res.status(409).json({ status: 409, error: 'A party has been registered with this same acronym' });
+        return;
+      }
+      return res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
     }
-    parties.push(newParty);
-    return res.status(201).json({
-      status: 201,
-      data: [
-        newParty,
-      ],
-    });
   }
 
   static getOneParty(req, res, next) {
