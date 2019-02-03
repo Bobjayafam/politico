@@ -104,6 +104,16 @@ class Validate {
     }
     return next();
   }
+
+  static validateVote(req, res, next) {
+    const { voter, office, candidate } = req.body;
+    if (isNaN(voter) || isNaN(office) || isNaN(candidate)) {
+      const error = new Error('voter, office and candidate fields must be numbers');
+      error.status = 400;
+      next(error);
+    }
+    return next();
+  }
 }
 
 
