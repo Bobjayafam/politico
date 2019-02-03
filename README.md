@@ -1,4 +1,5 @@
 # politico
+[![Build Status](https://travis-ci.org/Bobjayafam/politico.svg?branch=develop)](https://travis-ci.org/Bobjayafam/politico) [![Coverage Status](https://coveralls.io/repos/github/Bobjayafam/politico/badge.svg?branch=develop)](https://coveralls.io/github/Bobjayafam/politico?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/35216ddb20be54347494/maintainability)](https://codeclimate.com/github/Bobjayafam/politico/maintainability)
 Politico- A web application that enables citizens give their mandate to politicians running for different government offices while building trust in the process through transparency.
 
 # Features

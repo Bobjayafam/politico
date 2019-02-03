@@ -88,6 +88,46 @@ class OfficeController {
       await client.release();
     }
   }
+
+  static async registerCandidate(req, res, next) {
+    const client = await pool.connect();
+    try {
+      const id = parseInt(req.params.id, 10);
+      const { office, party } = req.body;
+      const query = 'INSERT INTO candidates(office, party, candidate) VALUES($1, $2, $3) RETURNING *';
+      const values = [office, party, id];
+      const result = await client.query(query, values);
+      const { rowCount, rows } = result;
+      if (rowCount > 0) {
+        res.status(200).json({
+          status: 200,
+          data: rows,
+        });
+        return;
+      }
+    } catch (error) {
+      const { constraint } = error;
+      if (constraint === 'candidates_pkey') {
+        res.status(409).json({ status: 409, error: 'The user has already been registered for this office' });
+        return;
+      }
+      if (constraint === 'candidates_office_fkey') {
+        res.status(404).json({ status: 404, error: 'The office is not available' });
+        return;
+      }
+      if (constraint === 'candidates_party_fkey') {
+        res.status(404).json({ status: 404, error: 'the party does not exist' });
+        return;
+      }
+      if (constraint === 'candidates_candidate_fkey') {
+        res.status(404).json({ status: 404, error: 'User not found' });
+        return;
+      }
+      res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
+    }
+  }
 }
 
 export default OfficeController;

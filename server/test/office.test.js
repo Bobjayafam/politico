@@ -9,8 +9,8 @@ const should = chai.should();
 describe('POST /api/v1/offices', () => {
   it('should create a new office', (done) => {
     chai.request(server).post('/api/v1/offices').send({
-      name: 'house of assembly',
-      type: 'state',
+      name: 'chairman',
+      type: 'local government',
     })
       .end((err, res) => {
         should.not.exist(err);
@@ -21,8 +21,8 @@ describe('POST /api/v1/offices', () => {
 
   it('should return an error when office name and type already exist', (done) => {
     chai.request(server).post('/api/v1/offices').send({
-      name: 'house of assembly',
-      type: 'state',
+      name: 'chairman',
+      type: 'local government',
     })
       .end((err, res) => {
         res.status.should.eql(409);
@@ -94,3 +94,14 @@ describe('GET /api/v1/offices', () => {
 });
 
 
+describe('POST /api/v1/office/userId/register', () => {
+  it('should register a user as a candidate', (done) => {
+    chai.request(server).post('/api/v1/offices/2/register').send({
+      office: 1,
+      party: 3,
+    }).end((err, res) => {
+      console.log(res.text);
+      done();
+    });
+  });
+});
