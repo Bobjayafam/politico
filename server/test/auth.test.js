@@ -7,10 +7,10 @@ chai.use(chaiHttp);
 const should = chai.should();
 
 const newUser = {
-  firstname: 'Stanley',
-  lastname: 'Obi',
-  othername: 'Abanum',
-  email: 'stapolly@yahoo.com',
+  firstname: 'David',
+  lastname: 'Itoadon',
+  othername: 'Omofoma',
+  email: 'pastor_dave@yahoo.com',
   password: '123456',
   phoneNumber: '09034589684',
   passportUrl: 'http://kkssls.jpg',
