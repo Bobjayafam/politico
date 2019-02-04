@@ -19,7 +19,12 @@ class UserController {
 
       if (rows) {
         const user = rows[0];
-        const token = Helpers.generateToken(rows[0].id);
+        const payload = {
+          id: user.id,
+          isAdmin: user.is_admin,
+        };
+        const token = Helpers.generateToken({ payload });
+        console.log(payload);
         return res.status(201).json({
           status: 201,
           data: [{
@@ -49,7 +54,7 @@ class UserController {
     const client = await pool.connect();
     try {
       const { email, password } = req.body;
-      const query = 'SELECT id, email, password, first_name, last_name FROM users WHERE email = $1';
+      const query = 'SELECT * FROM users WHERE email = $1';
       const values = [email];
       const result = await client.query(query, values);
       if (result.rowCount <= 0) {
@@ -67,7 +72,11 @@ class UserController {
         });
         return;
       }
-      const token = Helpers.generateToken(userFound.id);
+      const payload = {
+        id: userFound.id,
+        isAdmin: userFound.is_admin,
+      };
+      const token = Helpers.generateToken(payload);
       // eslint-disable-next-line consistent-return
       return res.status(200).json({
         status: 200,
