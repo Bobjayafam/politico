@@ -128,6 +128,32 @@ class OfficeController {
       await client.release();
     }
   }
+
+  static async getResult(req, res, next) {
+    const client = await pool.connect();
+
+    try {
+      const { id } = req.params;
+      const query = 'SELECT candidate, office, COUNT(candidate) AS total_votes FROM votes WHERE office = $1 GROUP BY office, candidate';
+      const values = [id];
+
+      const result = await client.query(query, values);
+      const { rows, rowCount } = result;
+      if (rowCount <= 0) {
+        const error = new Error('No office with such id');
+        error.status = 404;
+        return next(error);
+      }
+      res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (error) {
+      return res.status(500).json({ status: 500, error: error.message });
+    } finally {
+      await client.release();
+    }
+  }
 }
 
 export default OfficeController;
