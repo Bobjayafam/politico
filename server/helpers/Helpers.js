@@ -25,12 +25,8 @@ class Helpers {
   }
 
   static verifyToken(token) {
-    try {
-      const legit = jwt.verify(token, secretKey);
-      return legit;
-    } catch (err) {
-      return false;
-    }
+    const legit = jwt.verify(token, secretKey);
+    return legit;
   }
 
   static isValidPassword(password) {
