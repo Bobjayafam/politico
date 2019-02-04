@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "A web application that enables citizens give their mandate to politicians running for different government offices while building trust in the process through transparency.",
   "main": "index.js",
+  "engines": {
+    "node": "8.11.1",
+    "npm": "6.7.0"
+  },
   "scripts": {
     "clean": "rm -rf dist && mkdir dist",
     "build-babel": "babel -d ./dist ./server -s",
     "build": "npm run clean && npm run build-babel",
+    "heroku-postbuild": "npm install --production",
     "start": "npm run build && node ./dist/server.js",
     "dev": "babel-watch server/server.js",
     "migration": "babel-node server/db/migration.js",
