@@ -1,4 +1,4 @@
-import parties from '../models/parties';
+
 import { logoUrlUploaded } from '../middleware/imageUpload';
 import pool from '../db/connection';
 
@@ -81,13 +81,6 @@ class PartyController {
     try {
       const result = await client.query(query);
       const { rowCount, rows } = result;
-      if (rowCount <= 0) {
-        res.status(200).json({
-          status: 200,
-          data: [],
-        });
-        return;
-      }
       res.status(200).json({
         status: 200,
         data: rows,

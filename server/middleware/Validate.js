@@ -1,24 +1,35 @@
 import Helpers from '../helpers/Helpers';
 
+
 class Validate {
   static validateParty(req, res, next) {
+    const errors = [];
     const {
-      name, hqAddress, acronym,
+      name, hqAddress, acronym, logoUrl,
     } = req.body;
-    if (Helpers.isEmpty(name)) {
-      const error = new Error('Enter a valid party name');
-      error.status = 400;
-      return next(error);
+    if (!name || Helpers.isEmpty(name)) {
+      const error = 'Enter a valid party name';
+      errors.push(error);
     }
-    if (Helpers.isEmpty(hqAddress)) {
-      const error = new Error('Enter a valid party address');
-      error.status = 400;
-      return next(error);
+    if (!hqAddress || Helpers.isEmpty(hqAddress)) {
+      const error = 'Enter a valid party address';
+      errors.push(error);
     }
-    if (Helpers.isEmpty(acronym)) {
-      const error = new Error('Enter a valid party acronym');
-      error.status = 400;
-      return next(error);
+    if (!acronym || Helpers.isEmpty(acronym)) {
+      const error = 'Enter a valid party acronym';
+      errors.push(error);
+    }
+
+    // if (!logoUrl || Helpers.isEmpty(logoUrl)) {
+    //   const error = 'Enter a valid image';
+    //   errors.push(error);
+    // }
+    if (errors.length > 0) {
+      res.status(400).json({
+        status: 400,
+        error: errors,
+      });
+      return;
     }
     return next();
   }
@@ -35,22 +46,29 @@ class Validate {
 
   static validateOffice(req, res, next) {
     const { type, name } = req.body;
+    const errors = [];
 
-    if (typeof name === 'string' && name.trim().length === 0) {
-      const error = new Error('Enter a valid office name');
-      error.status = 400;
-      return next(error);
+    if (!name || Helpers.isEmpty(name)) {
+      const error = 'Enter a valid party name';
+      errors.push(error);
     }
-    if (typeof type === 'string' && type.trim().length === 0) {
-      const error = new Error('Enter a valid office name');
-      error.status = 400;
-      return next(error);
+    if (!type || Helpers.isEmpty(type)) {
+      const error = 'Enter a valid party type';
+      errors.push(error);
     }
-    if (type !== 'federal' && type.trim().toLowerCase() !== 'state' && type.trim().toLowerCase() !== 'legislative' && type.trim().toLowerCase() !== 'local government') {
-      const error = new Error('Office type can only be either federal, state, legislative or local government');
-      error.status = 400;
-      return next(error);
+    if (type.trim().toLowerCase() !== 'federal' && type.trim().toLowerCase() !== 'state' && type.trim().toLowerCase() !== 'legislative' && type.trim().toLowerCase() !== 'local government') {
+      const error = 'Office type can only be either federal, state, legislative or local government';
+      errors.push(error);
     }
+
+    if (errors.length > 0) {
+      res.status(400).json({
+        status: 400,
+        error: errors,
+      });
+      return;
+    }
+
     return next();
   }
 
@@ -59,58 +77,87 @@ class Validate {
       firstname, lastname, othername, email, password, phoneNumber, passportUrl,
     } = req.body;
 
-    if (Helpers.isEmpty(firstname) || Helpers.isEmpty(lastname)) {
-      const error = new Error('First Name or Last Name cannot be empty');
-      error.status = 400;
-      return next(error);
+    const errors = [];
+
+    if (!firstname || !lastname || Helpers.isEmpty(firstname) || Helpers.isEmpty(lastname)) {
+      const error = 'First Name or Last Name cannot be empty';
+      errors.push(error);
     }
-    if (!Helpers.isValidImageUrl(passportUrl)) {
-      const error = new Error('Enter a valid image URL');
-      error.status = 400;
-      return next(error);
+    if (!passportUrl || !Helpers.isValidImageUrl(passportUrl)) {
+      const error = 'Enter a valid image URL';
+      errors.push(error);
     }
-    if (!Helpers.isValidEmail(email)) {
-      const error = new Error('Enter a valid email');
-      error.status = 400;
-      return next(error);
+    if (!email || !Helpers.isValidEmail(email)) {
+      const error = 'Enter a valid email';
+      errors.push(error);
     }
-    if (!Helpers.isValidPhone(phoneNumber)) {
-      const error = new Error('Enter a valid phone number');
-      error.status = 400;
-      return next(error);
+    if (!phoneNumber || !Helpers.isValidPhone(phoneNumber)) {
+      const error = 'Enter a valid phone number';
+      errors.push(error);
     }
 
-    if (!Helpers.isValidPassword(password)) {
-      const error = new Error('password must 6 characters or more');
-      error.status = 400;
-      return next(error);
+    if (!password || !Helpers.isValidPassword(password)) {
+      const error = 'password must 6 characters or more';
+      errors.push(error);
+    }
+
+    if (errors.length > 0) {
+      res.status(400).json({
+        status: 400,
+        error: errors,
+      });
+      return;
     }
 
     return next();
   }
 
   static validateUserLogin(req, res, next) {
+    const errors = [];
     const { email, password } = req.body;
-    if (!Helpers.isValidEmail(email)) {
-      const error = new Error('Invalid email');
-      error.status = 401;
+    if (!email || !Helpers.isValidEmail(email)) {
+      const error = 'Invalid email';
+      errors.push(error);
+    }
+
+    if (!password || !Helpers.isValidPassword(password)) {
+      const error = 'Invalid password';
+      error.status = 400;
       return next(error);
     }
 
-    if (!Helpers.isValidPassword(password)) {
-      const error = new Error('Invalid password');
-      error.status = 401;
-      return next(error);
+    if (errors.length > 0) {
+      res.status(400).json({
+        status: 400,
+        error: errors,
+      });
+      return;
     }
     return next();
   }
 
   static validateVote(req, res, next) {
-    const { voter, office, candidate } = req.body;
-    if (isNaN(voter) || isNaN(office) || isNaN(candidate)) {
-      const error = new Error('voter, office and candidate fields must be numbers');
-      error.status = 400;
-      next(error);
+    const { office, candidate } = req.body;
+    if (isNaN(office) || isNaN(candidate)) {
+      const error = 'voter, office and candidate fields must be numbers';
+      res.status(400).json({
+        status: 400,
+        error,
+      });
+    }
+    return next();
+  }
+
+  static validatePartyName(req, res, next) {
+    const { name } = req.body;
+
+    if (!name || Helpers.isEmpty(name)) {
+      const error = 'Enter a valid party name';
+      res.status(400).json({
+        status: 400,
+        error,
+      });
+      return;
     }
     return next();
   }

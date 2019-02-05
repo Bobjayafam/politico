@@ -1,4 +1,3 @@
-import offices from '../models/offices';
 import pool from '../db/connection';
 
 class OfficeController {
@@ -98,10 +97,16 @@ class OfficeController {
       const values = [office, party, id];
       const result = await client.query(query, values);
       const { rowCount, rows } = result;
+      console.log(rows);
       if (rowCount > 0) {
-        res.status(200).json({
-          status: 200,
-          data: rows,
+        res.status(201).json({
+          status: 201,
+          data: [
+            {
+              office: rows[0].office,
+              candidate: rows[0].candidate,
+            }
+          ]
         });
         return;
       }
@@ -134,7 +139,7 @@ class OfficeController {
 
     try {
       const { id } = req.params;
-      const query = 'SELECT candidate, office, COUNT(candidate) AS total_votes FROM votes WHERE office = $1 GROUP BY office, candidate';
+      const query = 'SELECT candidate, office, COUNT(candidate) AS result FROM votes WHERE office = $1 GROUP BY office, candidate';
       const values = [id];
 
       const result = await client.query(query, values);
