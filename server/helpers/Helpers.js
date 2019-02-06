@@ -33,7 +33,7 @@ class Helpers {
   }
 
   static isValidImageUrl(imgUrl) {
-    return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|png)/.test(imgUrl);
+    return /([^\s]+(\.(jpg|png))$)/.test(imgUrl);
   }
 
   static isValidPhone(phoneNumber) {

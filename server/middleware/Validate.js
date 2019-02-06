@@ -4,32 +4,34 @@ import Helpers from '../helpers/Helpers';
 class Validate {
   static validateParty(req, res, next) {
     const errors = [];
+    let error;
     const {
       name, hqAddress, acronym, logoUrl,
     } = req.body;
-    if (!name || Helpers.isEmpty(name)) {
-      const error = 'Enter a valid party name';
+    console.log('body', req.body);
+    if (name === '' || !name) {
+      error = 'enter name';
       errors.push(error);
     }
-    if (!hqAddress || Helpers.isEmpty(hqAddress)) {
-      const error = 'Enter a valid party address';
+    if (hqAddress === '' || !hqAddress) {
+      error = 'enter hq address';
       errors.push(error);
     }
-    if (!acronym || Helpers.isEmpty(acronym)) {
-      const error = 'Enter a valid party acronym';
+    if (acronym === '' || !acronym) {
+      error = 'enter an acronym';
       errors.push(error);
     }
 
-    // if (!logoUrl || Helpers.isEmpty(logoUrl)) {
-    //   const error = 'Enter a valid image';
-    //   errors.push(error);
-    // }
+    if (!logoUrl || logoUrl === '') {
+      error = 'Enter a valid image';
+      errors.push(error);
+    }
+
     if (errors.length > 0) {
       res.status(400).json({
         status: 400,
         error: errors,
       });
-      return;
     }
     return next();
   }
@@ -49,14 +51,14 @@ class Validate {
     const errors = [];
 
     if (!name || Helpers.isEmpty(name)) {
-      const error = 'Enter a valid party name';
+      const error = 'Enter a valid office name';
       errors.push(error);
     }
     if (!type || Helpers.isEmpty(type)) {
-      const error = 'Enter a valid party type';
+      const error = 'Enter a valid office type';
       errors.push(error);
     }
-    if (type.trim().toLowerCase() !== 'federal' && type.trim().toLowerCase() !== 'state' && type.trim().toLowerCase() !== 'legislative' && type.trim().toLowerCase() !== 'local government') {
+    if (type !== 'federal' && type !== 'state' && type !== 'legislative' && type !== 'local government') {
       const error = 'Office type can only be either federal, state, legislative or local government';
       errors.push(error);
     }

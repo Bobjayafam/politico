@@ -60,8 +60,7 @@ const uploadLogo = (req, res, next) => {
         fs.unlinkSync(path);
         return next();
       });
-    } 
-    else {
+    } else {
       const error = 'Please upload an image in the logoUrl field';
       res.status(400).json({
         status: 400,
