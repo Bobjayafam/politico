@@ -6,6 +6,6 @@ import Auth from '../middleware/Auth';
 
 const router = express.Router();
 
-router.post('/', Auth.isLoggedIn, Validate.validateVote, VoteController.vote);
+router.post('/', Auth.isLoggedIn, VoteController.vote);
 
 export default router;

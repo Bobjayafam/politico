@@ -24,11 +24,6 @@ class Helpers {
     return token;
   }
 
-  static verifyToken(token) {
-    const legit = jwt.verify(token, secretKey);
-    return legit;
-  }
-
   static isValidPassword(password) {
     return password.length >= 6;
   }

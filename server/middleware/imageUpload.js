@@ -60,10 +60,13 @@ const uploadLogo = (req, res, next) => {
         fs.unlinkSync(path);
         return next();
       });
-    } else {
-      const error = new Error('Please upload an image in the logoUrl field');
-      error.status = 400;
-      return next(error);
+    } 
+    else {
+      const error = 'Please upload an image in the logoUrl field';
+      res.status(400).json({
+        status: 400,
+        error,
+      });
     }
   });
 };
