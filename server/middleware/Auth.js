@@ -5,7 +5,7 @@ dotenv.config();
 
 class Auth {
   static isLoggedIn(req, res, next) {
-    let token = req.headers['x-access-token'];
+    const token = req.headers['x-access-token'];
     if (token) {
       jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
         if (err) {
@@ -27,7 +27,7 @@ class Auth {
 
 
   static checkAdmin(req, res, next) {
-    let token = req.headers['x-access-token'];
+    const token = req.headers['x-access-token'];
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       req.decoded = decoded;
       if (!decoded.isAdmin) {
@@ -36,7 +36,7 @@ class Auth {
           error: 'You are unauthorized for this operation',
         });
       }
-      return next();
+      next();
     });
   }
 }
