@@ -78,37 +78,44 @@ class Validate {
     } = req.body;
 
     const errors = [];
+    let error;
 
-    if (!firstname || !lastname || Helpers.isEmpty(firstname) || Helpers.isEmpty(lastname)) {
-      const error = 'First Name or Last Name cannot be empty';
-      errors.push(error);
-    }
-    if (!passportUrl || !Helpers.isValidImageUrl(passportUrl)) {
-      const error = 'Enter a valid image URL';
-      errors.push(error);
-    }
-    if (!email || !Helpers.isValidEmail(email)) {
-      const error = 'Enter a valid email';
-      errors.push(error);
-    }
-    if (!phoneNumber || !Helpers.isValidPhone(phoneNumber)) {
-      const error = 'Enter a valid phone number';
+    if (!firstname) {
+      error = 'Enter first name';
       errors.push(error);
     }
 
-    if (!password || !Helpers.isValidPassword(password)) {
-      const error = 'password must 6 characters or more';
+    if (!lastname) {
+      error = 'Enter last name';
+      errors.push(error);
+    }
+
+    if (!email) {
+      error = 'Enter valid email';
+      errors.push(error);
+    }
+
+    if (!password) {
+      error = 'Enter password';
+      errors.push(error);
+    }
+
+    if (!phoneNumber) {
+      error = 'Enter phone number';
+      errors.push(error);
+    }
+
+    if (!passportUrl) {
+      error = 'Enter valid image';
       errors.push(error);
     }
 
     if (errors.length > 0) {
-      res.status(400).json({
+      return res.status(400).json({
         status: 400,
         error: errors,
       });
-      return;
     }
-
     return next();
   }
 

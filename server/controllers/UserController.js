@@ -9,6 +9,8 @@ class UserController {
         firstname, lastname, othername, email, password, phoneNumber, passportUrl,
       } = req.body;
 
+      console.log(req.body);
+
       const hashedPassword = Helpers.hashPassword(password);
 
       const query = 'INSERT INTO users(first_name, last_name, other_name, email, password, phone_number, passport_url) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *';

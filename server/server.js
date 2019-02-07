@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 import routes from './routes';
 import ErrorMiddleware from './middleware/ErrorMiddleware';
@@ -16,6 +17,7 @@ const port = process.env.PORT || 4000;
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use('/api/v1', routes);
 
