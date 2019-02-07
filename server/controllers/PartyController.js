@@ -10,35 +10,53 @@ class PartyController {
         name, hqAddress, acronym,
       } = req.body;
 
-      const query = 'INSERT INTO parties(name, hq_address, acronym, logo_url) VALUES($1, $2, $3, $4) RETURNING *';
-      const values = [name, hqAddress, acronym, logoUrlUploaded];
+      const sql = 'SELECT * FROM parties WHERE name = $1';
+      const val = [name];
 
-      const result = await client.query(query, values);
-      const { rows } = result;
-      if (result.rowCount) {
-        res.status(201).json({
-          status: 200,
-          data: [{
-            id: rows[0].id,
-            name: rows[0].name,
-            hqAddress: rows[0].hq_address,
-            acronym: rows[0].acronym,
-            logoUrl: rows[0].logo_url,
-          }],
+      const partyFound = await client.query(sql, val);
+
+      const { rowCount } = partyFound;
+
+      if (rowCount > 0) {
+        res.status(409).json({
+          status: 409,
+          error: 'A party has already been created with this name',
         });
-        return;
+      } else {
+        const sql = 'SELECT * FROM parties WHERE acronym = $1';
+        const val = [acronym];
+
+        const partyFound = await client.query(sql, val);
+
+        const { rowCount } = partyFound;
+
+        if (rowCount > 0) {
+          res.status(409).json({
+            status: 409,
+            error: 'A party has already been created with this acronym',
+          });
+        } else {
+          const query = 'INSERT INTO parties(name, hq_address, acronym, logo_url) VALUES($1, $2, $3, $4) RETURNING *';
+          const values = [name, hqAddress, acronym, logoUrlUploaded];
+
+          const result = await client.query(query, values);
+          const { rows } = result;
+          if (result.rowCount) {
+            return res.status(201).json({
+              status: 200,
+              data: [{
+                id: rows[0].id,
+                name: rows[0].name,
+              }],
+            });
+          }
+        }
       }
     } catch (error) {
-      const { constraint } = error;
-      if (constraint === 'parties_name_key') {
-        res.status(409).json({ status: 409, error: 'A party has been registered with this same name' });
-        return;
-      }
-      if (constraint === 'parties_acronym_key') {
-        res.status(409).json({ status: 409, error: 'A party has been registered with this same acronym' });
-        return;
-      }
-      return res.status(500).json({ status: 500, error: error.message });
+      res.status(500).jso({
+        status: 500,
+        error: 'Something went wrong while processing your request',
+      });
     } finally {
       await client.release();
     }
@@ -68,7 +86,7 @@ class PartyController {
         }],
       });
     } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+      return res.status(500).json({ status: 500, error: 'Something went wrong while processing your request' });
     } finally {
       await client.release();
     }
@@ -86,7 +104,7 @@ class PartyController {
         data: rows,
       });
     } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+      return res.status(500).json({ status: 500, error: 'Something went wrong while processing your request' });
     } finally {
       await client.release();
     }
@@ -112,9 +130,8 @@ class PartyController {
         status: 200,
         data: rows,
       });
-
     } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+      return res.status(500).json({ status: 500, error: 'Something went wrong while processing your request' });
     } finally {
       await client.release();
     }
@@ -141,9 +158,8 @@ class PartyController {
           message: `You successfully deleted ${rows[0].name} party`,
         }],
       });
-
     } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+      return res.status(500).json({ status: 500, error: 'Something went wrong while processing your request' });
     } finally {
       await client.release();
     }

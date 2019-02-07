@@ -42,6 +42,7 @@ async function submitForm(e) {
     body: JSON.stringify(newUser),
   }).then(res => res.json())
     .then((signupResponse) => {
+      console.log(signupResponse);
       if (signupResponse.status === 201) {
         const { email, token, isAdmin } = signupResponse;
         const user = {
@@ -53,13 +54,15 @@ async function submitForm(e) {
         } else {
           window.location = 'user.html';
         }
-      } else {
+      } else if (Array.isArray(signupResponse)) {
         const template = `
             <ul>
               ${signupResponse.error.map(err => `<li class="alert-danger">${err}</li>`).join('')}
             </ul>
           `;
         alertBox.innerHTML = template;
+      } else {
+        alertBox.innerHTML = `<li class="alert-danger">${signupResponse.error}</li>`;
       }
     })
     .catch(err => console.log(err));
