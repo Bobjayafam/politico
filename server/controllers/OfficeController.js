@@ -10,7 +10,7 @@ class OfficeController {
       const sql = 'SELECT * FROM offices WHERE name = $1';
       const val = [name];
 
-      const officeFound = await client.query(sql, val);
+      const officeFound = await client.query(sql);
 
       const { rowCount } = officeFound;
 
@@ -41,7 +41,7 @@ class OfficeController {
     } catch (error) {
       res.status(500).json({
         status: 500,
-        error: error.message,
+        error: 'Something went wrong while processing your request',
       });
     } finally {
       await client.release();

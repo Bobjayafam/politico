@@ -183,6 +183,7 @@ class Validate {
     const errors = [];
     let error;
     const { email, password } = req.body;
+<<<<<<< HEAD
 
     if (!email) {
       error = 'Email cannot be empty';
@@ -196,11 +197,37 @@ class Validate {
 
     if (email && !Helpers.isValidEmail(email)) {
       error = 'Invalid email';
+||||||| merged common ancestors
+    if (!email || !Helpers.isValidEmail(email)) {
+      const error = 'Invalid email';
+=======
+
+    if (!email) {
+      error = 'Email cannot be empty';
+      errors.push(error);
+    }
+
+    if (!password) {
+      error = 'Password cannot be empty';
+>>>>>>> 893b5e706507882f65f8d6add4cb19678491da0c
+      errors.push(error);
+    }
+
+<<<<<<< HEAD
+    if (password && !Helpers.isValidPassword(password)) {
+      error = 'Invalid password';
+||||||| merged common ancestors
+    if (!password || !Helpers.isValidPassword(password)) {
+      const error = 'Invalid password';
+=======
+    if (email && !Helpers.isValidEmail(email)) {
+      error = 'Invalid email';
       errors.push(error);
     }
 
     if (password && !Helpers.isValidPassword(password)) {
       error = 'Invalid password';
+>>>>>>> 893b5e706507882f65f8d6add4cb19678491da0c
       error.status = 400;
       next(error);
     }
@@ -235,12 +262,25 @@ class Validate {
       errors.push(error);
     }
 
+<<<<<<< HEAD
     if (name && Helpers.isEmpty(name)) {
       error = 'Enter a valid party name';
       errors.push(error);
     }
     if (errors.length > 0) {
       return res.status(400).json({
+||||||| merged common ancestors
+    if (!name || Helpers.isEmpty(name)) {
+      const error = 'Enter a valid party name';
+      res.status(400).json({
+=======
+    if (name && Helpers.isEmpty(name)) {
+      error = 'Enter a valid party name';
+      errors.push(error);
+    }
+    if (errors.length > 0) {
+      res.status(400).json({
+>>>>>>> 893b5e706507882f65f8d6add4cb19678491da0c
         status: 400,
         error: errors,
       });
