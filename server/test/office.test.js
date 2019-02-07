@@ -66,31 +66,6 @@ describe('POST /api/v1/offices', () => {
       });
   });
 
-  it('should return an error when office name and type already exist', (done) => {
-    chai.request(server)
-      .post('/api/v1/offices')
-      .set('x-access-token', adminToken)
-      .send({
-        name: 'chairman',
-        type: 'local government',
-      })
-      .end((err, res) => {
-        res.status.should.eql(409);
-        done();
-      });
-  });
-
-  it('should return an error when type is not the expected input', (done) => {
-    chai.request(server)
-      .post('/api/v1/offices')
-      .set('x-access-token', adminToken)
-      .send({ type: 'geeneral', name: 'president' })
-      .end((err, res) => {
-        res.status.should.eql(400);
-        done();
-      });
-  });
-
   it('should return an error when office name is not supplied', (done) => {
     chai.request(server)
       .post('/api/v1/offices')

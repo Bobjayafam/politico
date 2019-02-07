@@ -6,29 +6,39 @@ class OfficeController {
     try {
       const { name, type } = req.body;
 
-      const query = 'INSERT INTO offices(name, type) VALUES($1, $2) RETURNING *';
-      const values = [name, type];
+      const sql = 'SELECT * FROM offices WHERE name = $1';
 
-      const result = await client.query(query, values);
-      const { rows } = result;
-      if (result.rowCount) {
-        res.status(201).json({
-          status: 200,
-          data: [{
-            id: rows[0].id,
-            name: rows[0].name,
-            type: rows[0].type,
-          }],
+      const officeFound = await client.query(sql);
+
+      const { rowCount } = officeFound;
+
+      if (rowCount > 0) {
+        res.status(409).json({
+          status: 409,
+          error: 'This office has been created already',
         });
-        return;
+      } else {
+        const query = 'INSERT INTO offices(name, type) VALUES($1, $2) RETURNING *';
+        const values = [name, type];
+
+        const result = await client.query(query, values);
+        const { rows } = result;
+        if (result.rowCount) {
+          return res.status(201).json({
+            status: 200,
+            data: [{
+              id: rows[0].id,
+              name: rows[0].name,
+              type: rows[0].type,
+            }],
+          });
+        }
       }
     } catch (error) {
-      const { constraint } = error;
-      if (constraint === 'offices_name_key') {
-        res.status(409).json({ status: 409, error: 'This office has been created already' });
-        return;
-      }
-      return res.status(500).json({ status: 500, error: error.message });
+      res.status(500).json({
+        status: 500,
+        error: 'Something went wrong while processing your request',
+      });
     } finally {
       await client.release();
     }
@@ -53,7 +63,10 @@ class OfficeController {
         data: rows,
       });
     } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+      res.status(500).json({
+        status: 500,
+        error: 'Something went wrong while processing your request',
+      });
     } finally {
       await client.release();
     }
@@ -77,12 +90,15 @@ class OfficeController {
         status: 200,
         data: [{
           id: rows[0].id,
-          name: rows[0].name,
           type: rows[0].type,
+          name: rows[0].name,
         }],
       });
     } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+      return res.status(500).json({
+        status: 500,
+        error: 'Something went wrong while processing your request',
+      });
     } finally {
       await client.release();
     }
@@ -93,42 +109,77 @@ class OfficeController {
     try {
       const id = parseInt(req.params.id, 10);
       const { office, party } = req.body;
-      const query = 'INSERT INTO candidates(office, party, candidate) VALUES($1, $2, $3) RETURNING *';
-      const values = [office, party, id];
-      const result = await client.query(query, values);
-      const { rowCount, rows } = result;
-      console.log(rows);
-      if (rowCount > 0) {
-        res.status(201).json({
-          status: 201,
-          data: [
-            {
-              office: rows[0].office,
-              candidate: rows[0].candidate,
-            }
-          ]
+
+      const sql = 'SELECT * FROM users WHERE id = $1';
+      const val = [id];
+
+      const userFound = await client.query(sql, val);
+      const { rowCount } = userFound;
+      if (rowCount <= 0) {
+        res.status(404).json({
+          status: 404,
+          error: 'No user with such id',
         });
-        return;
+      } else {
+        const sql = 'SELECT * FROM offices WHERE id = $1';
+        const val = [office];
+
+        const officeFound = await client.query(sql, val);
+        const { rowCount } = officeFound;
+        if (rowCount <= 0) {
+          res.status(404).json({
+            status: 404,
+            error: 'No office with such id',
+          });
+        } else {
+          const sql = 'SELECT * FROM parties WHERE id = $1';
+          const val = [party];
+
+          const partyFound = await client.query(sql, val);
+          const { rowCount } = partyFound;
+          if (rowCount <= 0) {
+            res.status(404).json({
+              status: 404,
+              error: 'No party with such id',
+            });
+          } else {
+            const sql = 'SELECT * FROM candidates WHERE office = $1 AND candidate =$2';
+            const val = [office, id];
+            const registered = await client.query(sql, val);
+
+            const { rowCount } = registered;
+
+            if (rowCount > 0) {
+              res.status(409).json({
+                status: 409,
+                error: 'The candidate has already been registered for this office',
+              });
+            } else {
+              const query = 'INSERT INTO candidates(office, party, candidate) VALUES($1, $2, $3) RETURNING *';
+              const values = [office, party, id];
+              const result = await client.query(query, values);
+              const { rowCount, rows } = result;
+
+              if (rowCount > 0) {
+                return res.status(201).json({
+                  status: 201,
+                  data: [
+                    {
+                      office: rows[0].office,
+                      user: rows[0].candidate,
+                    },
+                  ],
+                });
+              }
+            }
+          }
+        }
       }
     } catch (error) {
-      const { constraint } = error;
-      if (constraint === 'candidates_pkey') {
-        res.status(409).json({ status: 409, error: 'The user has already been registered for this office' });
-        return;
-      }
-      if (constraint === 'candidates_office_fkey') {
-        res.status(404).json({ status: 404, error: 'The office is not available' });
-        return;
-      }
-      if (constraint === 'candidates_party_fkey') {
-        res.status(404).json({ status: 404, error: 'the party does not exist' });
-        return;
-      }
-      if (constraint === 'candidates_candidate_fkey') {
-        res.status(404).json({ status: 404, error: 'User not found' });
-        return;
-      }
-      res.status(500).json({ status: 500, error: error.message });
+      res.status(500).json({
+        status: 500,
+        error: 'Something went wrong while processing your request',
+      });
     } finally {
       await client.release();
     }
@@ -154,7 +205,7 @@ class OfficeController {
         data: rows,
       });
     } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+      return res.status(500).json({ status: 500, error: 'Something went wrong while processing your request' });
     } finally {
       await client.release();
     }

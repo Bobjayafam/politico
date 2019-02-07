@@ -9,44 +9,55 @@ class UserController {
         firstname, lastname, othername, email, password, phoneNumber, passportUrl,
       } = req.body;
 
-      console.log(req.body);
+      const sql = 'SELECT * FROM users WHERE email = $1';
+      const val = [email];
 
-      const hashedPassword = Helpers.hashPassword(password);
+      const userFound = await client.query(sql, val);
 
-      const query = 'INSERT INTO users(first_name, last_name, other_name, email, password, phone_number, passport_url) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *';
-      const values = [firstname, lastname, othername, email, hashedPassword, phoneNumber, passportUrl];
+      const { rowCount } = userFound;
 
-      const user = await client.query(query, values);
-      const { rows } = user;
-
-      if (rows) {
-        const user = rows[0];
-        const payload = {
-          id: user.id,
-          isAdmin: user.is_admin,
-        };
-        const token = Helpers.generateToken({ payload });
-        console.log(payload);
-        return res.status(201).json({
-          status: 201,
-          data: [{
-            token,
-            user: {
-              firstName: user.first_name,
-              lastName: user.last_name,
-              email: user.email,
-              phoneNumber: user.phone_number,
-              isAdmin: user.is_admin,
-            },
-          }],
+      if (rowCount > 0) {
+        res.status(409).json({
+          status: 409,
+          error: 'Email is already registered',
         });
+      } else {
+        const hashedPassword = Helpers.hashPassword(password);
+
+        const query = 'INSERT INTO users(first_name, last_name, other_name, email, password, phone_number, passport_url) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+        const values = [firstname, lastname, othername, email, hashedPassword, phoneNumber, passportUrl];
+
+        const user = await client.query(query, values);
+        const { rows } = user;
+
+        if (rows) {
+          const user = rows[0];
+          const payload = {
+            id: user.id,
+            isAdmin: user.is_admin,
+          };
+          const token = Helpers.generateToken({ payload });
+
+          return res.status(201).json({
+            status: 201,
+            data: [{
+              token,
+              user: {
+                firstName: user.first_name,
+                lastName: user.last_name,
+                email: user.email,
+                phoneNumber: user.phone_number,
+                isAdmin: user.is_admin,
+              },
+            }],
+          });
+        }
       }
     } catch (error) {
-      const { constraint } = error;
-      if (constraint === 'users_email_key') {
-        return res.status(409).json({ status: 409, error: 'Email is already registered' });
-      }
-      return res.status(500).json({ status: 500, error: error.message });
+      res.status(500).json({
+        status: 500,
+        error: 'Something went wrong with your request',
+      });
     } finally {
       await client.release();
     }
