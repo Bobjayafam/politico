@@ -10,7 +10,7 @@ class OfficeController {
       const sql = 'SELECT * FROM offices WHERE name = $1';
       const val = [name];
 
-      const officeFound = await client.query(sql);
+      const officeFound = await client.query(sql, val);
 
       const { rowCount } = officeFound;
 
