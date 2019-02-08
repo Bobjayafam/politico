@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 /*====== Global Styles ======*/
@@ -679,3 +680,12 @@ table button:hover {
   text-align: center;
 }
 
+.alert-danger {
+  background: red;
+  width: 50%;
+  margin: 0 auto;
+  color: #fff;
+  list-style: none;
+  margin-bottom: 5px;
+  text-align: center;
+}

@@ -23,8 +23,6 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="signup.html" class="active">SignUp</a></li>
         <li><a href="login.html">LogIn</a></li>
-        <li><a href="parties.html">Political Parties</a></li>
-        <li><a href="results.html">Election Results</a></li>
       </ul>
 
     </nav>
@@ -34,38 +32,41 @@
       </div>
     </section>
     <div class="signup-container container">
-      <form action="">
+      <div class="alert-box">
+
+      </div>
+      <form action="" class="signup-form">
         <div class="input-group">
-          <label for="">First Name <span>*</span></label>
-          <input type="text" required>
+          <label for="firstname">First Name <span>*</span></label>
+          <input type="text" name="firstname" id="firstname" required>
         </div>
         <div class="input-group">
-          <label for="">Last Name <span>*</span></label>
-          <input type="text" required>
+          <label for="lastname">Last Name <span>*</span></label>
+          <input type="text" name="lastname" id="lastname" required>
         </div>
         <div class="input-group">
-          <label for="">Other Name</label>
-          <input type="text">
+          <label for="othername">Other Name</label>
+          <input type="text" name="othername" id="othername">
         </div>
         <div class="input-group">
-          <label for="">Email address <span>*</span></label>
-          <input type="email" required>
+          <label for="email">Email address <span>*</span></label>
+          <input type="email" name="email" id="email" required>
         </div>
         <div class="input-group">
-          <label for="">Password <span>*</span></label>
-          <input type="password" required>
+          <label for="password">Password <span>*</span></label>
+          <input type="password" name="password" id="password" required>
         </div>
         <div class="input-group">
-          <label for="">Age <span>*</span></label>
-          <input type="number" min="18" required>
+          <label for="confirm-password">Confirm Password <span>*</span></label>
+          <input type="password" name="confirm-password" id="confirm-password" required>
         </div>
         <div class="input-group">
-          <label for="">Phone Number</label>
-          <input type="number">
+          <label for="phoneNumber">Phone Number</label>
+          <input type="number" name="phoneNumber" id="phoneNumber">
         </div>
         <div class="input-group">
-          <label for="">Profile Picture<span>*</span></label>
-          <input type="file" required>
+          <label for="passportUrl">Profile Picture<span>*</span></label>
+          <input type="file" name="passportUrl" id="passportUrl" required>
         </div>
         <div class="input-group">
           <button>Sign Up</button>
@@ -83,6 +84,7 @@
     </footer>
   </div>
 
+  <script src="js/signup.js"></script>
 </body>
 
 </html>
