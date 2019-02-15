@@ -3,7 +3,7 @@ console.log('connected');
 const signupForm = document.querySelector('.signup-form');
 const alertBox = document.querySelector('.alert-box');
 
-const API_URL = 'http://localhost:4000/api/v1/';
+const API_URL = 'https://politico-ja.herokuapp.com/api/v1/';
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dpuyyqxnl/image/upload';
 const CLOUDINARY_UPLOAD_PRESET = 'zk8ssipf';
 

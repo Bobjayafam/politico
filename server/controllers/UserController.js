@@ -44,9 +44,6 @@ class UserController {
               token,
               user: {
                 firstName: user.first_name,
-                lastName: user.last_name,
-                email: user.email,
-                phoneNumber: user.phone_number,
                 isAdmin: user.is_admin,
               },
             }],
@@ -97,7 +94,7 @@ class UserController {
           token,
           user: {
             firstname: userFound.first_name,
-            email: userFound.email,
+            isAdmin: userFound.is_admin,
           },
         }],
       });
