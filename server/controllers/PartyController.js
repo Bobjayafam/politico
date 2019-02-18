@@ -43,7 +43,7 @@ class PartyController {
           const { rows } = result;
           if (result.rowCount) {
             return res.status(201).json({
-              status: 200,
+              status: 201,
               data: [{
                 id: rows[0].id,
                 name: rows[0].name,

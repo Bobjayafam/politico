@@ -10,16 +10,25 @@ if (!isAdmin) {
 
 const createTemplate = (parties) => {
   let template = '';
-  parties.map((party) => {
+  parties.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 0;
+  });
+  parties.map((party, index) => {
     template += `
-    <tr>
-      <td data-th="S/N">${party.id}</td>
+    <tr data-id="${party.id}">
+      <td data-th="S/N">${index + 1}</td>
       <td data-th="Party Name">${party.name}</td>
       <td data-th="Acronym">${party.acronym}</td>
       <td data-th="Logo"><img src="${party.logo_url}" alt="logo" class="party-logo"></td>
       <td data-th="Headquarters">${party.hq_address}</td>
       <td data-th="Actions">
-        <button onclick="window.location.href='edit-party.html'">Edit</button>
+        <button class="edit">Edit</button>
         <button class="delete">Delete</button>
       </td>
     </tr>
@@ -46,3 +55,11 @@ const getParties = () => {
 };
 
 getParties();
+
+tableBody.addEventListener('click', (e) => {
+  if (e.target.matches('.edit')) {
+    const partyId = e.target.parentNode.parentNode.dataset.id;
+    const partyName = e.target.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.textContent;
+    window.location = `edit-party.html?partyName=${partyName}&partyId=${partyId}`;
+  }
+});
