@@ -1,6 +1,8 @@
 const API_URL = 'http://localhost:4000/api/v1/';
 const loggedInUser = JSON.parse(localStorage.getItem('user'));
 const tableBody = document.querySelector('.table-body');
+const alertBox = document.querySelector('.alert-box');
+const alertBoxModal = document.querySelector('.alert-box-modal');
 
 const { token, isAdmin } = loggedInUser;
 
@@ -47,9 +49,18 @@ const getParties = () => {
   })
     .then(res => res.json())
     .then((data) => {
-      console.log(data.data);
-      const template = createTemplate(data.data);
-      tableBody.innerHTML = template;
+      if (data.data.length === 0) {
+        const template1 = `
+              <ul>
+                <li class="alert-success">No party is currently registered on this platform</li>
+              </ul>
+            `;
+
+        alertBox.innerHTML = template1;
+      } else {
+        const template = createTemplate(data.data);
+        tableBody.innerHTML = template;
+      }
     })
     .catch(err => console.log(err));
 };
@@ -61,5 +72,54 @@ tableBody.addEventListener('click', (e) => {
     const partyId = e.target.parentNode.parentNode.dataset.id;
     const partyName = e.target.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.textContent;
     window.location = `edit-party.html?partyName=${partyName}&partyId=${partyId}`;
+  }
+});
+
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+const closeBtn = document.querySelector('.close');
+const cancelBtn = document.querySelector('.cancel');
+const confirmDelete = document.querySelector('.confirm-delete');
+
+tableBody.addEventListener('click', (e) => {
+  if (e.target.matches('.delete')) {
+    modal.style.display = 'block';
+    overlay.style.display = 'block';
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      overlay.style.display = 'none';
+    });
+    cancelBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      overlay.style.display = 'none';
+    });
+    const partyId = e.target.parentNode.parentNode.dataset.id;
+    confirmDelete.addEventListener('click', () => {
+      fetch(`${API_URL}parties/${partyId}`, {
+        method: 'DELETE',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token,
+        },
+      }).then(res => res.json())
+        .then((response) => {
+          if (response.status === 200) {
+            const template = `
+              <ul>
+                <li class="alert-success">Party successfully deleted and redirecting to dashboard</li>
+              </ul>
+            `;
+
+            alertBoxModal.innerHTML = template;
+            setTimeout(() => {
+              alertBoxModal.innerHTML = '';
+              window.location.href = 'admin.html';
+            }, 3000);
+          }
+        }).catch(err => console.log(err));
+    });
   }
 });
