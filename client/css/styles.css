@@ -701,7 +701,6 @@ table button:hover {
 .lds-hourglass {
   display: inline-block;
   position: relative;
-  background: #ca2748;
   width: 64px;
   height: 64px;
 }
@@ -713,8 +712,8 @@ table button:hover {
   height: 0;
   margin: 6px;
   box-sizing: border-box;
-  border: 26px solid #fff;
-  border-color: #fff transparent #fff transparent;
+  border: 26px solid #ca2748;;
+  border-color: #ca2748 transparent #ca2748 transparent;
   animation: lds-hourglass 1.2s infinite;
 }
 @keyframes lds-hourglass {
