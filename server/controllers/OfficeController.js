@@ -5,8 +5,6 @@ class OfficeController {
     const client = await pool.connect();
     try {
       const { name, type } = req.body;
-      console.log('error', req.body);
-
       const sql = 'SELECT * FROM offices WHERE name = $1';
       const val = [name];
 
@@ -23,13 +21,11 @@ class OfficeController {
         const query = 'INSERT INTO offices(name, type) VALUES($1, $2) RETURNING *';
         const values = [name, type];
 
-        console.log('an error occured here', values);
-
         const result = await client.query(query, values);
         const { rows } = result;
         if (result.rowCount) {
           return res.status(201).json({
-            status: 200,
+            status: 201,
             data: [{
               id: rows[0].id,
               name: rows[0].name,
