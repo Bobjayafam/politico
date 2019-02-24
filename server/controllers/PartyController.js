@@ -4,7 +4,6 @@ import pool from '../db/connection';
 
 class PartyController {
   static async createParty(req, res) {
-    const client = await pool.connect();
     try {
       const {
         name, hqAddress, acronym,
@@ -13,7 +12,7 @@ class PartyController {
       const sql = 'SELECT * FROM parties WHERE name = $1';
       const val = [name];
 
-      const partyFound = await client.query(sql, val);
+      const partyFound = await pool.query(sql, val);
 
       const { rowCount } = partyFound;
 
@@ -26,7 +25,7 @@ class PartyController {
         const sql = 'SELECT * FROM parties WHERE acronym = $1';
         const val = [acronym];
 
-        const partyFound = await client.query(sql, val);
+        const partyFound = await pool.query(sql, val);
 
         const { rowCount } = partyFound;
 
@@ -39,7 +38,7 @@ class PartyController {
           const query = 'INSERT INTO parties(name, hq_address, acronym, logo_url) VALUES($1, $2, $3, $4) RETURNING *';
           const values = [name, hqAddress, acronym, logoUrlUploaded];
 
-          const result = await client.query(query, values);
+          const result = await pool.query(query, values);
           const { rows } = result;
           if (result.rowCount) {
             return res.status(201).json({
@@ -53,28 +52,26 @@ class PartyController {
         }
       }
     } catch (error) {
-      res.status(500).jso({
+      return res.status(500).json({
         status: 500,
         error: 'Something went wrong while processing your request',
       });
-    } finally {
-      await client.release();
     }
   }
 
   static async getOneParty(req, res, next) {
-    const client = await pool.connect();
     const id = parseInt(req.params.id, 10);
     const query = 'SELECT * FROM parties WHERE id = $1';
     const values = [id];
 
     try {
-      const result = await client.query(query, values);
+      const result = await pool.query(query, values);
       const { rowCount, rows } = result;
       if (rowCount <= 0) {
-        const error = new Error('No party with such id');
-        error.status = 404;
-        return next(error);
+        return res.status(404).json({
+          status: 404,
+          error: 'No party with such id',
+        });
       }
       res.status(200).json({
         status: 200,
@@ -87,17 +84,14 @@ class PartyController {
       });
     } catch (error) {
       return res.status(500).json({ status: 500, error: 'Something went wrong while processing your request' });
-    } finally {
-      await client.release();
     }
   }
 
   static async getAllParties(req, res) {
-    const client = await pool.connect();
     const query = 'SELECT * FROM parties';
 
     try {
-      const result = await client.query(query);
+      const result = await pool.query(query);
       const { rowCount, rows } = result;
       res.status(200).json({
         status: 200,
@@ -105,13 +99,10 @@ class PartyController {
       });
     } catch (error) {
       return res.status(500).json({ status: 500, error: 'Something went wrong while processing your request' });
-    } finally {
-      await client.release();
     }
   }
 
   static async updatePartyName(req, res, next) {
-    const client = await pool.connect();
     try {
       const id = parseInt(req.params.id, 10);
       const { name } = req.body;
@@ -119,12 +110,16 @@ class PartyController {
       const query = 'UPDATE parties SET name = $1 WHERE id = $2 RETURNING *';
       const values = [name, id];
 
-      const result = await client.query(query, values);
+      const result = await pool.query(query, values);
       const { rowCount, rows } = result;
       if (rowCount <= 0) {
-        const error = new Error('No party with such id');
-        error.status = 404;
-        return next(error);
+        // const error = new Error('No party with such id');
+        // error.status = 404;
+        // return next(error);
+        return res.status(404).json({
+          status: 404,
+          error: 'No party wiith such id',
+        });
       }
       res.status(200).json({
         status: 200,
@@ -132,19 +127,16 @@ class PartyController {
       });
     } catch (error) {
       return res.status(500).json({ status: 500, error: 'Something went wrong while processing your request' });
-    } finally {
-      await client.release();
     }
   }
 
   static async deleteParty(req, res, next) {
-    const client = await pool.connect();
     try {
       const id = parseInt(req.params.id, 10);
       const query = 'DELETE FROM parties WHERE id = $1 RETURNING *';
       const values = [id];
 
-      const result = await client.query(query, values);
+      const result = await pool.query(query, values);
 
       const { rowCount, rows } = result;
       if (rowCount <= 0) {
@@ -160,8 +152,6 @@ class PartyController {
       });
     } catch (error) {
       return res.status(500).json({ status: 500, error: 'Something went wrong while processing your request' });
-    } finally {
-      await client.release();
     }
   }
 }

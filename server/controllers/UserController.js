@@ -3,7 +3,6 @@ import Helpers from '../helpers/Helpers';
 
 class UserController {
   static async createUser(req, res) {
-    const client = await pool.connect();
     try {
       const {
         firstname, lastname, othername, email, password, phoneNumber, passportUrl,
@@ -12,7 +11,7 @@ class UserController {
       const sql = 'SELECT * FROM users WHERE email = $1';
       const val = [email];
 
-      const userFound = await client.query(sql, val);
+      const userFound = await pool.query(sql, val);
 
       const { rowCount } = userFound;
 
@@ -27,7 +26,7 @@ class UserController {
         const query = 'INSERT INTO users(first_name, last_name, other_name, email, password, phone_number, passport_url) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *';
         const values = [firstname, lastname, othername, email, hashedPassword, phoneNumber, passportUrl];
 
-        const user = await client.query(query, values);
+        const user = await pool.query(query, values);
         const { rows } = user;
 
         if (rows) {
@@ -38,7 +37,7 @@ class UserController {
           };
           const token = Helpers.generateToken({ payload });
 
-          return res.status(201).json({
+          res.status(201).json({
             status: 201,
             data: [{
               token,
@@ -51,36 +50,31 @@ class UserController {
         }
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         status: 500,
         error: 'Something went wrong with your request',
       });
-    } finally {
-      await client.release();
     }
   }
 
   static async userLogin(req, res) {
-    const client = await pool.connect();
     try {
       const { email, password } = req.body;
       const query = 'SELECT * FROM users WHERE email = $1';
       const values = [email];
-      const result = await client.query(query, values);
+      const result = await pool.query(query, values);
       if (result.rowCount <= 0) {
-        res.status(401).json({
+        return res.status(401).json({
           status: 401,
-          error: 'You are unauthorized',
+          error: 'Invalid Username/Password',
         });
-        return;
       }
       const userFound = result.rows[0];
       if (!Helpers.comparePassword(password, userFound.password)) {
-        res.status(401).json({
+        return res.status(401).json({
           status: 401,
-          error: 'You are unauthorized',
+          error: 'Invalid Username/Password',
         });
-        return;
       }
       const payload = {
         id: userFound.id,
@@ -99,9 +93,7 @@ class UserController {
         }],
       });
     } catch (error) {
-      res.status(500).json({ status: 500, error: error.message });
-    } finally {
-      await client.release();
+      return res.status(500).json({ status: 500, error: error.message });
     }
   }
 }

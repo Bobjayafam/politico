@@ -48,9 +48,40 @@ describe('POST /api/v1/parties', () => {
       .post('/api/v1/parties')
       .set('x-access-token', adminToken)
       .type('form')
-      .field('name', 'Peoples Democratic Party')
+      .field('name', 'Peoples democratic party')
       .field('hqAddress', '2 tanka street')
       .field('acronym', 'bdd')
+      .attach('logoUrl', './UI/assets/images/accord.jpg', 'accord.jpg')
+      .then((res) => {
+        res.status.should.eql(409);
+        done();
+      });
+  });
+
+  it('should not create a new party if party name is not valid', (done) => {
+    chai.request(server)
+      .post('/api/v1/parties')
+      .set('x-access-token', adminToken)
+      .type('form')
+      .field('name', '     ')
+      .field('hqAddress', '2 tanka street')
+      .field('acronym', 'bdd')
+      .attach('logoUrl', './UI/assets/images/accord.jpg', 'accord.jpg')
+      .then((res) => {
+        res.status.should.eql(400);
+        res.body.error[0].should.eql('Enter a valid party name');
+        done();
+      });
+  });
+
+  it('should not create a new party if party acronym already exists', (done) => {
+    chai.request(server)
+      .post('/api/v1/parties')
+      .set('x-access-token', adminToken)
+      .type('form')
+      .field('name', 'Peoples democratic parties')
+      .field('hqAddress', '2 tanka street')
+      .field('acronym', 'PDP')
       .attach('logoUrl', './UI/assets/images/accord.jpg', 'accord.jpg')
       .then((res) => {
         res.status.should.eql(409);
