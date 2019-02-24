@@ -16,4 +16,6 @@ if (process.env.NODE_ENV === 'test') {
 const pool = new Pool({ connectionString });
 
 
-export default pool;
+export default {
+  query: (text, params) => pool.query(text, params),
+};

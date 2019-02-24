@@ -1,7 +1,6 @@
 import Joi from 'joi';
 import Helpers from '../helpers/Helpers';
 
-
 class Validate {
   static validateParty(req, res, next) {
     const errors = [];
@@ -43,11 +42,10 @@ class Validate {
       errors.push(error);
     }
     if (errors.length > 0) {
-      res.status(400).json({
+      return res.status(400).json({
         status: 400,
         error: errors,
       });
-      return;
     }
     next();
   }
@@ -55,18 +53,18 @@ class Validate {
   static validateId(req, res, next) {
     const { id } = req.params;
     if (isNaN(id)) {
-      const error = new Error('Invalid id');
-      error.status = 400;
-      return next(error);
+      return res.status(400).json({
+        status: 400,
+        error: 'Invalid id',
+      });
     }
-    return next();
+    next();
   }
 
   static validateOffice(req, res, next) {
     const { type, name } = req.body;
     const errors = [];
     let error;
-
     if (!name) {
       error = 'Party name cannot be empty';
       errors.push(error);
@@ -205,13 +203,12 @@ class Validate {
     }
 
     if (password && !Helpers.isValidPassword(password)) {
-      error = 'Invalid password';
-      error.status = 400;
-      next(error);
+      error = 'Invalid password, password should be at least 6 characters';
+      errors.push(error);
     }
 
     if (errors.length > 0) {
-      res.status(400).json({
+      return res.status(400).json({
         status: 400,
         error: errors,
       });
@@ -223,12 +220,12 @@ class Validate {
     const { office, candidate } = req.body;
     if (isNaN(office) || isNaN(candidate)) {
       const error = 'voter, office and candidate fields must be Ids';
-      res.status(400).json({
+      return res.status(400).json({
         status: 400,
         error,
       });
     }
-    return next();
+    next();
   }
 
   static validatePartyName(req, res, next) {

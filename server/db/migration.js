@@ -5,21 +5,21 @@ import candidate from './models/candidate';
 import vote from './models/vote';
 import office from './models/office';
 
-const dropTables = 'DROP TABLE IF EXISTS users, parties, offices, candidates, votes CASCADE';
+const dropTables = 'DROP TABLE IF EXISTS users, parties, offices, prospective_candidates, candidates, votes CASCADE';
+const dropTypes = 'DROP TYPE IF EXISTS status';
 
 const migrate = async () => {
-  const client = await pool.connect();
   try {
-    await client.query(dropTables);
-    await client.query(user.CREATE_TABLE);
-    await client.query(office.CREATE_TABLE);
-    await client.query(party.CREATE_TABLE);
-    await client.query(candidate.CREATE_TABLE);
-    await client.query(vote.CREATE_TABLE);
+    await pool.query(dropTables);
+    await pool.query(dropTypes);
+    await pool.query(user.CREATE_TABLE);
+    await pool.query(office.CREATE_TABLE);
+    await pool.query(party.CREATE_TABLE);
+    await pool.query(candidate.CREATE_TYPE);
+    await pool.query(candidate.CREATE_TABLE);
+    await pool.query(vote.CREATE_TABLE);
   } catch (error) {
     console.log(error);
-  } finally {
-    await client.release();
   }
 };
 

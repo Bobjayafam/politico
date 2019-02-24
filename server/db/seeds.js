@@ -35,21 +35,19 @@ const officeQuery = 'INSERT INTO offices(name, type) VALUES ($1, $2)';
 const partyQuery = 'INSERT INTO parties(name, hq_address, logo_url, acronym) VALUES ($1, $2, $3, $4)';
 
 const seed = async () => {
-  const client = await pool.connect();
+
   try {
-    await client.query(userQuery, adminData);
-    await client.query(userQuery, user1);
-    await client.query(userQuery, user2);
-    await client.query(officeQuery, office1);
-    await client.query(officeQuery, office2);
-    await client.query(officeQuery, office3);
-    await client.query(partyQuery, party1);
-    await client.query(partyQuery, party2);
-    await client.query(partyQuery, party3);
+    await pool.query(userQuery, adminData);
+    await pool.query(userQuery, user1);
+    await pool.query(userQuery, user2);
+    await pool.query(officeQuery, office1);
+    await pool.query(officeQuery, office2);
+    await pool.query(officeQuery, office3);
+    await pool.query(partyQuery, party1);
+    await pool.query(partyQuery, party2);
+    await pool.query(partyQuery, party3);
   } catch (error) {
     console.log(error);
-  } finally {
-    await client.release();
   }
 };
 

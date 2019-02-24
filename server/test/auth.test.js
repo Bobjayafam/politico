@@ -78,6 +78,25 @@ describe('POST /api/v1/auth/signup', () => {
       console.log(error);
     }
   });
+
+  it('should return an error if the passporturl is not an image file', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'Bayo',
+          lastname: 'Ojo',
+          othername: 'John',
+          email: 'bayo123@yahoo.com',
+          password: 'lioness',
+          passportUrl: 'http://nsjjkskjpg',
+          phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
 });
 
 describe('POST /auth/login', () => {
@@ -118,6 +137,62 @@ describe('POST /auth/login', () => {
           password: '123456789',
         });
       res.status.should.eql(401);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error when password is empty', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'stapolly@yahoo.com',
+          password: '',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error when password is not correct', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: '',
+          password: '123456789',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error when password is less than six characters', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'stapolly@yahoo.com',
+          password: '1234',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error when email is invalid', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'stapollyyahoo.com',
+          password: '123456',
+        });
+      res.status.should.eql(400);
     } catch (error) {
       console.log(error);
     }

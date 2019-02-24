@@ -2,7 +2,6 @@ import pool from '../db/connection';
 
 class VoteController {
   static async vote(req, res) {
-    const client = await pool.connect();
     try {
       const voter = req.decoded.id;
       const { office, candidate } = req.body;
@@ -10,7 +9,7 @@ class VoteController {
       const sql = 'SELECT * FROM offices WHERE id = $1';
       const val = [office];
 
-      const officeFound = await client.query(sql, val);
+      const officeFound = await pool.query(sql, val);
       const { rowCount } = officeFound;
       if (rowCount <= 0) {
         res.status(404).json({
@@ -21,7 +20,7 @@ class VoteController {
         const sql = 'SELECT * FROM candidates WHERE id = $1';
         const val = [candidate];
 
-        const candidateFound = await client.query(sql, val);
+        const candidateFound = await pool.query(sql, val);
         const { rowCount } = candidateFound;
         if (rowCount <= 0) {
           res.status(404).json({
@@ -32,7 +31,7 @@ class VoteController {
           const sql = 'SELECT * FROM votes WHERE office = $1 AND candidate = $2';
           const val = [office, candidate];
 
-          const voteFound = await client.query(sql, val);
+          const voteFound = await pool.query(sql, val);
 
           const { rowCount } = voteFound;
 
@@ -44,7 +43,7 @@ class VoteController {
           } else {
             const query = 'INSERT INTO votes(created_by, office, candidate) VALUES($1, $2, $3) RETURNING *';
             const values = [voter, office, candidate];
-            const result = await client.query(query, values);
+            const result = await pool.query(query, values);
             const { rowCount, rows } = result;
             if (rowCount > 0) {
               return res.status(201).json({
@@ -56,12 +55,10 @@ class VoteController {
         }
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         status: 500,
         error: 'Something went wrong while processing your request',
       });
-    } finally {
-      await client.release();
     }
   }
 }
