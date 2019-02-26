@@ -1,9 +1,14 @@
+/* eslint-disable no-undef */
 const alertBox = document.querySelector('.alert-box');
 const API_URL = 'http://localhost:4000/api/v1/';
 const loggedInUser = JSON.parse(localStorage.getItem('user'));
 const partySelect = document.querySelector('#party');
 const officeSelect = document.querySelector('#office');
 const contestForm = document.querySelector('.contest-form');
+const loader = document.querySelector('.lds-hourglass');
+
+
+loader.style.display = 'none';
 
 if (!loggedInUser) {
   window.location = 'login.html';
@@ -83,21 +88,51 @@ const getParties = () => {
     }).catch(err => console.log(err));
 };
 
-// const handleContest = (e) => {
-//   e.preventDefault();
-//   const formData = new FormData(contestForm);
-//   const officeId = formData.get('office-name');
-//   const partyId = formData.get('party-name');
-//   const userId = payload.id;
+const handleContest = (e) => {
+  e.preventDefault();
+  loader.style.display = 'inline-block';
+  const formData = new FormData(contestForm);
+  const office = formData.get('office-name');
+  const party = formData.get('party-name');
+  const userId = payload.id;
 
-//   const newInterestData = {
-//     officeId, partyId, userId,
-//   };
+  const newInterestData = {
+    party,
+  };
 
-//   console.log(newInterestData);
-// };
+  fetch(`${API_URL}offices/${office}/contest`, {
+    mode: 'cors',
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      'x-access-token': token,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newInterestData),
+  }).then(res => res.json())
+    .then((result) => {
+      loader.style.display = 'none';
+      if (result.status === 201) {
+        const template = `
+            <ul>
+              <li class="alert-success">Candidate nomination form has been successfully submitted and redirecting to User dashboard</li>
+            </ul>
+          `;
 
-// contestForm.addEventListener('submit', handleContest);
+        alertBox.innerHTML = template;
+        setTimeout(() => {
+          window.location = 'user.html';
+        }, 3000);
+      } else {
+        alertBox.innerHTML = `<li class="alert-danger">${result.error}</li>`;
+        setTimeout(() => {
+          window.location = 'user.html';
+        }, 3000);
+      }
+    }).catch(err => console.log(err));
+};
+
+contestForm.addEventListener('submit', handleContest);
 
 getOffices();
 getParties();

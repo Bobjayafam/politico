@@ -35,7 +35,7 @@ class OfficeController {
         }
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         status: 500,
         error: 'Something went wrong while processing your request',
       });
@@ -265,7 +265,7 @@ class OfficeController {
       });
     }
     catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         status: 500,
         error: 'Something went wrong while processing your request',
       });

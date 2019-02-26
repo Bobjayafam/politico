@@ -119,6 +119,21 @@ describe('POST /api/v1/parties', () => {
       });
   });
 
+  it('should not create a new party if headquarters address field contains only empty spaces', (done) => {
+    chai.request(server)
+      .post('/api/v1/parties')
+      .set('x-access-token', adminToken)
+      .type('form')
+      .field('name', 'alliance')
+      .field('hqAddress', '     ')
+      .field('acronym', 'bdd')
+      .attach('logoUrl', './UI/assets/images/accord.jpg', 'accord.jpg')
+      .then((res) => {
+        res.status.should.eql(400);
+        done();
+      });
+  });
+
   it('should not create a new party if the file uploaded is not an image', (done) => {
     chai.request(server)
       .post('/api/v1/parties')
@@ -133,6 +148,22 @@ describe('POST /api/v1/parties', () => {
         done();
       });
   });
+
+  it('should not create a new party if the file upload field is empty', (done) => {
+    chai.request(server)
+      .post('/api/v1/parties')
+      .set('x-access-token', adminToken)
+      .type('form')
+      .field('name', 'Action Group')
+      .field('hqAddress', '2 tanka street')
+      .field('acronym', 'bdd')
+      .attach('')
+      .then((res) => {
+        res.status.should.eql(400);
+        done();
+      });
+  });
+
   it('should not create a new party if the acronym field is empty', (done) => {
     chai.request(server)
       .post('/api/v1/parties')
@@ -141,6 +172,21 @@ describe('POST /api/v1/parties', () => {
       .field('name', 'Action Group')
       .field('hqAddress', '2 tanka street')
       .field('acronym', '')
+      .attach('logoUrl', './UI/assets/images/accord.jpg', 'accord.jpg')
+      .then((res) => {
+        res.status.should.eql(400);
+        done();
+      });
+  });
+
+  it('should not create a new party if the acronym field is filled with just spaces', (done) => {
+    chai.request(server)
+      .post('/api/v1/parties')
+      .set('x-access-token', adminToken)
+      .type('form')
+      .field('name', 'Action Group')
+      .field('hqAddress', '2 tanka street')
+      .field('acronym', '     ')
       .attach('logoUrl', './UI/assets/images/accord.jpg', 'accord.jpg')
       .then((res) => {
         res.status.should.eql(400);
@@ -226,8 +272,21 @@ describe('PATCH /api/v1/parties/:id/name', () => {
         name: '',
       })
       .end((err, res) => {
-        should.not.exist(err);
         res.status.should.equal(400);
+        done();
+      });
+  });
+
+  it('should return an error when the name field is empty', (done) => {
+    chai.request(server)
+      .patch('/api/v1/parties/1/name')
+      .set('x-access-token', adminToken)
+      .send({
+        name: '      ',
+      })
+      .end((err, res) => {
+        res.status.should.equal(400);
+        res.body.error[0].should.eql('Enter a valid party name');
         done();
       });
   });

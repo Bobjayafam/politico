@@ -28,7 +28,6 @@ class UserController {
 
         const user = await pool.query(query, values);
         const { rows } = user;
-
         if (rows) {
           const user = rows[0];
           const payload = {
@@ -81,7 +80,7 @@ class UserController {
         isAdmin: userFound.is_admin,
       };
       const token = Helpers.generateToken(payload);
-      // eslint-disable-next-line consistent-return
+
       return res.status(200).json({
         status: 200,
         data: [{
