@@ -37,7 +37,7 @@ class Validate {
       errors.push(error);
     }
 
-    if (logoUrl && Helpers.isEmpty(logoUrl)) {
+    if (logoUrl && Helpers.isValidImageUrl(logoUrl)) {
       error = 'Enter a valid image';
       errors.push(error);
     }
@@ -58,7 +58,7 @@ class Validate {
         error: 'Invalid id',
       });
     }
-    next();
+    return next();
   }
 
   static validateOffice(req, res, next) {
@@ -247,7 +247,7 @@ class Validate {
         error: errors,
       });
     }
-    next();
+    return next();
   }
 }
 

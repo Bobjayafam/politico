@@ -101,6 +101,17 @@ describe('POST /api/v1/offices', () => {
         done();
       });
   });
+
+  it('should return an error when office type is only spaces', (done) => {
+    chai.request(server)
+      .post('/api/v1/offices')
+      .set('x-access-token', adminToken)
+      .send({ type: '      ', name: 'governor' })
+      .end((err, res) => {
+        res.status.should.eql(400);
+        done();
+      });
+  });
 });
 
 describe('GET /api/v1/offices', () => {

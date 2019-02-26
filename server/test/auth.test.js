@@ -60,6 +60,120 @@ describe('POST /api/v1/auth/signup', () => {
     }
   });
 
+  it('should return an error if the last name is not a string', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'Bayo',
+          lastname: null,
+          othername: 'John',
+          email: 'jjj@gmail.com',
+          password: 'lioness',
+          passportUrl: 'http://nsjjksk.jpg',
+          phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error if the first name is not a string', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: null,
+          lastname: 'James',
+          othername: 'John',
+          email: 'jjj@gmail.com',
+          password: 'lion',
+          passportUrl: 'http://nsjjksk.jpg',
+          phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error if the last name is less than 2 characters', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'Bayo',
+          lastname: 'A',
+          othername: 'John',
+          email: 'jjj@gmail.com',
+          password: 'lioness',
+          passportUrl: 'http://nsjjksk.jpg',
+          phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error if the first name is less than 2 characters', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'B',
+          lastname: 'Anslem',
+          othername: 'John',
+          email: 'jjj@gmail.com',
+          password: 'lioness',
+          passportUrl: 'http://nsjjksk.jpg',
+          phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error if the email field is empty', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'Bayo',
+          lastname: 'Ojo',
+          othername: 'John',
+          email: '',
+          password: 'lion',
+          passportUrl: 'http://nsjjksk.jpg',
+          phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error if the email is invalid', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'Bayo',
+          lastname: 'Ojo',
+          othername: 'John',
+          email: 'hhssjsjjsjsjsjs',
+          password: 'lion',
+          passportUrl: 'http://nsjjksk.jpg',
+          phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
   it('should return an error if the password is less than 6 characters', async () => {
     try {
       const res = await chai.request(server)
@@ -70,6 +184,25 @@ describe('POST /api/v1/auth/signup', () => {
           othername: 'John',
           email: 'bayo123@yahoo.com',
           password: 'lion',
+          passportUrl: 'http://nsjjksk.jpg',
+          phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error if the password is empty', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'Bayo',
+          lastname: 'Ojo',
+          othername: 'John',
+          email: 'bayo123@yahoo.com',
+          password: '',
           passportUrl: 'http://nsjjksk.jpg',
           phoneNumber: '08025862169',
         });
@@ -91,6 +224,63 @@ describe('POST /api/v1/auth/signup', () => {
           password: 'lioness',
           passportUrl: 'http://nsjjkskjpg',
           phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error if the passporturl is empty', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'Bayo',
+          lastname: 'Ojo',
+          othername: 'John',
+          email: 'bayo123@yahoo.com',
+          password: 'lioness',
+          passportUrl: '',
+          phoneNumber: '08025862169',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error if the phone number is invalid', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'Bayo',
+          lastname: 'Ojo',
+          othername: 'John',
+          email: 'bayo123@yahoo.com',
+          password: 'lioness',
+          passportUrl: 'http://nsjjkskjpg',
+          phoneNumber: '08025862',
+        });
+      res.status.should.eql(400);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should return an error if the phone number is empty', async () => {
+    try {
+      const res = await chai.request(server)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'Bayo',
+          lastname: 'Ojo',
+          othername: 'John',
+          email: 'bayo123@yahoo.com',
+          password: 'lioness',
+          passportUrl: 'http://nsjjkskjpg',
+          phoneNumber: '',
         });
       res.status.should.eql(400);
     } catch (error) {
