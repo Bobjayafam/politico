@@ -172,13 +172,14 @@ describe('GET /api/v1/offices', () => {
 });
 
 
-describe('POST /api/v1/office/officeId/contest', () => {
+describe('POST /api/v1/office/userId/contest', () => {
   it('should pre-register a user as a candidate', (done) => {
     chai.request(server)
-      .post('/api/v1/offices/1/contest')
+      .post('/api/v1/offices/2/contest')
       .set('x-access-token', user2Token)
       .send({
         party: 3,
+        office: 1,
       })
       .end((err, res) => {
         res.status.should.eql(201);
@@ -188,10 +189,11 @@ describe('POST /api/v1/office/officeId/contest', () => {
 
   it('should return 409 if user is already pre registered for the same office', (done) => {
     chai.request(server)
-      .post('/api/v1/offices/1/contest')
+      .post('/api/v1/offices/2/contest')
       .set('x-access-token', user2Token)
       .send({
         party: 3,
+        office: 1,
       })
       .end((err, res) => {
         res.status.should.eql(409);
@@ -201,10 +203,11 @@ describe('POST /api/v1/office/officeId/contest', () => {
 
   it('should return an error if the office id does not exist', (done) => {
     chai.request(server)
-      .post('/api/v1/offices/6/contest')
+      .post('/api/v1/offices/2/contest')
       .set('x-access-token', user2Token)
       .send({
         party: 3,
+        office: 6,
       })
       .end((err, res) => {
         res.status.should.eql(404);
@@ -214,10 +217,11 @@ describe('POST /api/v1/office/officeId/contest', () => {
 
   it('should return an error if the user is not logged in', (done) => {
     chai.request(server)
-      .post('/api/v1/offices/1/contest')
+      .post('/api/v1/offices/2/contest')
       .set('x-access-token', 'adminToken')
       .send({
         party: 3,
+        office: 1,
       })
       .end((err, res) => {
         res.status.should.eql(401);
@@ -227,10 +231,11 @@ describe('POST /api/v1/office/officeId/contest', () => {
 
   it('should return an error if the party id does not exist', (done) => {
     chai.request(server)
-      .post('/api/v1/offices/1/contest')
+      .post('/api/v1/offices/3/contest')
       .set('x-access-token', user3Token)
       .send({
         party: 13,
+        office: 2,
       })
       .end((err, res) => {
         res.status.should.eql(404);
@@ -239,7 +244,7 @@ describe('POST /api/v1/office/officeId/contest', () => {
   });
 });
 
-describe('PATCH /api/v1/offices/:officeId/register', () => {
+describe('PATCH /api/v1/offices/:candidateId/register', () => {
   it('should register a user as a candidate', (done) => {
     chai.request(server)
       .patch('/api/v1/offices/1/register')
