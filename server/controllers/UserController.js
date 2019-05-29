@@ -41,8 +41,11 @@ class UserController {
             data: [{
               token,
               user: {
-                firstName: user.first_name,
-                isAdmin: user.is_admin,
+                firstname: userFound.first_name,
+                isAdmin: userFound.is_admin,
+                lastname: userFound.last_name,
+                passportUrl: userFound.passport_url,
+                email: userFound.email,
               },
             }],
           });
@@ -51,7 +54,7 @@ class UserController {
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        error: 'Something went wrong with your request',
+        error: 'Something went wrong with your requests',
       });
     }
   }
@@ -88,6 +91,9 @@ class UserController {
           user: {
             firstname: userFound.first_name,
             isAdmin: userFound.is_admin,
+            lastname: userFound.last_name,
+            passportUrl: userFound.passport_url,
+            email: userFound.email,
           },
         }],
       });

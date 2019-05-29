@@ -46,6 +46,9 @@ class PartyController {
               data: [{
                 id: rows[0].id,
                 name: rows[0].name,
+                hqAddress: rows[0].hq_address,
+                acronym: rows[0].acronym,
+                logo_url: rows[0].logoUrlUploaded,
               }],
             });
           }
