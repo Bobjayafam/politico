@@ -5,9 +5,7 @@ class Validate {
   static validateParty(req, res, next) {
     const errors = [];
     let error;
-    const {
-      name, hqAddress, acronym, logoUrl,
-    } = req.body;
+    const { name, hqAddress, acronym, logoUrl } = req.body;
 
     if (!name) {
       error = 'Party name cannot be empty';
@@ -44,7 +42,7 @@ class Validate {
     if (errors.length > 0) {
       return res.status(400).json({
         status: 400,
-        error: errors,
+        error: errors
       });
     }
     next();
@@ -55,7 +53,7 @@ class Validate {
     if (isNaN(id)) {
       return res.status(400).json({
         status: 400,
-        error: 'Invalid id',
+        error: 'Invalid id'
       });
     }
     return next();
@@ -83,7 +81,7 @@ class Validate {
     if (errors.length > 0) {
       res.status(400).json({
         status: 400,
-        error: errors,
+        error: errors
       });
       return;
     }
@@ -93,7 +91,12 @@ class Validate {
 
   static validateUser(req, res, next) {
     const {
-      firstname, lastname, email, password, phoneNumber, passportUrl,
+      firstname,
+      lastname,
+      email,
+      password,
+      phoneNumber,
+      passportUrl
     } = req.body;
 
     const errors = [];
@@ -148,15 +151,15 @@ class Validate {
       error = 'Password should be at least six characters';
       errors.push(error);
     }
-    if (!phoneNumber) {
-      error = 'Enter phone number';
-      errors.push(error);
-    }
+    // if (!phoneNumber) {
+    //   error = 'Enter phone number';
+    //   errors.push(error);
+    // }
 
-    if (phoneNumber && !Helpers.isValidPhone(phoneNumber)) {
-      error = 'Enter a valid phone number';
-      errors.push(error);
-    }
+    // if (phoneNumber && !Helpers.isValidPhone(phoneNumber)) {
+    //   error = 'Enter a valid phone number';
+    //   errors.push(error);
+    // }
 
     if (!passportUrl) {
       error = 'Enter valid image';
@@ -171,7 +174,7 @@ class Validate {
     if (errors.length > 0) {
       return res.status(400).json({
         status: 400,
-        error: errors,
+        error: errors
       });
     }
     return next();
@@ -210,7 +213,7 @@ class Validate {
     if (errors.length > 0) {
       return res.status(400).json({
         status: 400,
-        error: errors,
+        error: errors
       });
     }
     next();
@@ -222,7 +225,7 @@ class Validate {
       const error = 'voter, office and candidate fields must be Ids';
       return res.status(400).json({
         status: 400,
-        error,
+        error
       });
     }
     next();
@@ -244,12 +247,11 @@ class Validate {
     if (errors.length > 0) {
       return res.status(400).json({
         status: 400,
-        error: errors,
+        error: errors
       });
     }
     return next();
   }
 }
-
 
 export default Validate;
